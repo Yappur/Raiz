@@ -3,6 +3,7 @@ import arrowDown from "../assets/icons/arrowDown.svg";
 import calendar from "../assets/icons/calendarIcon.svg";
 import { useStore } from "zustand";
 import useAppStore from "../store/useAppStore";
+import SelectLocation from "../common/SelectLocation";
 
 const FormCertificate = () => {
   const { setToast } = useStore(useAppStore);
@@ -33,10 +34,17 @@ const FormCertificate = () => {
 
   const tiposProducto = [
     { value: "indumentaria", label: "Indumentaria" },
-    { value: "alimento", label: "Alimento" },
-    { value: "artesania", label: "Artesanía" },
-    { value: "cosmetica", label: "Cosmética" },
-    { value: "otro", label: "Otro" },
+    { value: "tecnologia", label: "Tecnología" },
+    { value: "alimentos", label: "Alimentos" },
+    { value: "bebidas", label: "Bebidas" },
+    { value: "calzado", label: "Calzado" },
+    { value: "artesanias", label: "Artesanía" },
+    { value: "cosmeticos", label: "Cosméticos" },
+    { value: "mobiliario", label: "Mobiliario" },
+    { value: "joyeria", label: "Joyería" },
+    { value: "papeleria", label: "Papelería" },
+    { value: "textiles", label: "Textiles" },
+    { value: "otro", label: "Otro." },
   ];
 
   const lugaresProduccion = [
@@ -157,7 +165,7 @@ const FormCertificate = () => {
                 <img src={arrowDown} alt="arrowDown" className="h-5 w-5" />
               </button>
               {mostrarTipoSelect && (
-                <div className="absolute z-10 w-full mt-1 bg-white border border-gray-300 rounded-md shadow-lg">
+                <div className="absolute z-10 w-full mt-1 bg-white border border-gray-300 rounded-md shadow-lg max-h-40 overflow-y-auto">
                   {tiposProducto.map((tipo) => (
                     <button
                       key={tipo.value}
@@ -311,7 +319,7 @@ const FormCertificate = () => {
               onClick={limpiarFormulario}
               className="px-6 py-2 border border-gray-300 rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-orange-500 transition-colors"
             >
-              Cancelar
+              Limpiar
             </button>
             <button
               type="submit"
