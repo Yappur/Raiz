@@ -14,10 +14,8 @@ const FormCertificate = () => {
   const [mostrarTipoSelect, setMostrarTipoSelect] = useState(false);
   const [mostrarLugarSelect, setMostrarLugarSelect] = useState(false);
 
-  // Estados para los campos del formulario
   const [nombre, setNombre] = useState("");
   const [emisor, setEmisor] = useState("");
-  const [cantidad, setCantidad] = useState("");
   const [descripcion, setDescripcion] = useState("");
 
   const [errores, setErrores] = useState({});
@@ -63,11 +61,6 @@ const FormCertificate = () => {
       nuevosErrores.emisor = "Este campo es obligatorio";
     }
 
-    // Corregido: removido la "L" extra en el mensaje de error
-    if (!cantidad || cantidad <= 0) {
-      nuevosErrores.cantidad = "Este campo es obligatorio";
-    }
-
     if (!descripcion.trim()) {
       nuevosErrores.descripcion = "Este campo es obligatorio";
     }
@@ -88,20 +81,17 @@ const FormCertificate = () => {
     e.preventDefault();
 
     if (validarFormulario()) {
-      console.log("Formulario enviado con éxito");
       const datosFormulario = {
         nombre,
         tipoProducto,
         emisor,
-        cantidad,
         descripcion,
         fecha,
         lugarProduccion,
       };
-      console.log(datosFormulario);
+      console.log("Formulario enviado con éxito", datosFormulario);
       setToast("¡Certificado emitido con éxito!", "success");
     } else {
-      console.log("Formulario con errores");
       setToast("Por favor, completa todos los campos requeridos.", "error");
     }
   };
@@ -110,7 +100,6 @@ const FormCertificate = () => {
     setNombre("");
     setTipoProducto("");
     setEmisor("");
-    setCantidad("");
     setDescripcion("");
     setFecha("");
     setLugarProduccion("");
@@ -192,51 +181,23 @@ const FormCertificate = () => {
             </div>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
-              <label
-                htmlFor="emisor"
-                className="block text-sm font-medium mb-1"
-              >
-                Emisor
-              </label>
-              <input
-                id="emisor"
-                type="text"
-                value={emisor}
-                onChange={(e) => setEmisor(e.target.value)}
-                className={`w-full px-3 py-2 border rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-orange-400 ${
-                  errores.emisor ? "border-red-500" : "border-gray-300"
-                }`}
-                placeholder="Ej. Fundación EcoRaíz"
-              />
-              {errores.emisor && (
-                <p className="text-red-500 text-sm mt-1">{errores.emisor}</p>
-              )}
-            </div>
-
-            <div>
-              <label
-                htmlFor="cantidad"
-                className="block text-sm font-medium mb-1"
-              >
-                Cantidad
-              </label>
-              <input
-                id="cantidad"
-                type="number"
-                value={cantidad}
-                onChange={(e) => setCantidad(e.target.value)}
-                className={`w-full px-3 py-2 border rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-orange-400 ${
-                  errores.cantidad ? "border-red-500" : "border-gray-300"
-                }`}
-                placeholder="Ingrese la cantidad"
-                min="1"
-              />
-              {errores.cantidad && (
-                <p className="text-red-500 text-sm mt-1">{errores.cantidad}</p>
-              )}
-            </div>
+          <div>
+            <label htmlFor="emisor" className="block text-sm font-medium mb-1">
+              Emisor
+            </label>
+            <input
+              id="emisor"
+              type="text"
+              value={emisor}
+              onChange={(e) => setEmisor(e.target.value)}
+              className={`w-full px-3 py-2 border rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-orange-400 ${
+                errores.emisor ? "border-red-500" : "border-gray-300"
+              }`}
+              placeholder="Ej. Fundación EcoRaíz"
+            />
+            {errores.emisor && (
+              <p className="text-red-500 text-sm mt-1">{errores.emisor}</p>
+            )}
           </div>
 
           <div>
@@ -276,9 +237,7 @@ const FormCertificate = () => {
                 <span className={fecha ? "text-gray-900" : "text-gray-500"}>
                   {fecha ? formatearFecha(fecha) : "Elegí una fecha"}
                 </span>
-                <div>
-                  <img src={calendar} alt="calendar" className="h-5 w-5" />
-                </div>
+                <img src={calendar} alt="calendar" className="h-5 w-5" />
               </button>
               {mostrarCalendar && (
                 <div className="absolute z-10 mt-1 p-3 bg-white border border-gray-300 rounded-md shadow-lg">
@@ -319,7 +278,6 @@ const FormCertificate = () => {
                         ?.label
                     : "Elegí un lugar desde el dropdown"}
                 </span>
-
                 <img src={arrowDown} alt="arrowDown" className="h-5 w-5" />
               </button>
               {mostrarLugarSelect && (
