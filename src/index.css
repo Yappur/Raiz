@@ -1,0 +1,28 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+@import "tailwindcss";
+
+@theme {
+    /* Sections */
+    --color-sidebar: #FFF7F0C9;
+
+    /* Inputs */
+    --color-checkbox-border: #00000066;
+
+    /* Tables */
+    --color-table-border: #0000001A;
+    --color-table-header: #7C7C7C;
+    --color-table-body: #3C3835;
+    --color-table-body-selected: #FFF8F3AB;
+    --color-table-body-hover: #FF7F40;
+
+    /* Buttons */
+    --color-button-border: #0000008C;
+    --color-button-hover: #333333;
+
+    /* Icons */
+    --color-icon-hover: #FF7F40;
+}
+
+body {
+    font-family: "Inter", sans-serif;
+}
