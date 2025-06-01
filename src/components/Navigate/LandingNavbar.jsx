@@ -39,7 +39,7 @@ const LandingNavbar = ({ showQRScanner, setShowQRScanner }) => {
     } else {
       try {
         await connectWallet();
-        navigate("/producers/new-certificate");
+        navigate("/producers/home");
         setToast("¡Wallet conectada exitosamente!", "success");
       } catch (error) {
         if (error.message.includes("No se detectó ninguna wallet")) {

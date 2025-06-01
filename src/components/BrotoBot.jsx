@@ -1,15 +1,12 @@
 import React, { useState, useEffect } from "react";
 
-// Opción 1: Usando CDN (Recomendado para tu caso)
 const BrotoBot = () => {
   useEffect(() => {
-    // Crear y cargar el primer script
     const script1 = document.createElement("script");
     script1.src = "https://cdn.botpress.cloud/webchat/v2.5/inject.js";
     script1.async = true;
     document.head.appendChild(script1);
 
-    // Crear y cargar el segundo script después del primero
     script1.onload = () => {
       const script2 = document.createElement("script");
       script2.src =
@@ -17,7 +14,6 @@ const BrotoBot = () => {
       script2.async = true;
       document.head.appendChild(script2);
 
-      // Configurar el webchat una vez que se carguen los scripts
       script2.onload = () => {
         if (window.botpressWebChat) {
           window.botpressWebChat.init({
@@ -36,13 +32,10 @@ const BrotoBot = () => {
       };
     };
 
-    // Cleanup function
     return () => {
-      // Remover scripts al desmontar el componente
       const scripts = document.querySelectorAll('script[src*="botpress"]');
       scripts.forEach((script) => script.remove());
 
-      // Limpiar el webchat si existe
       if (window.botpressWebChat) {
         window.botpressWebChat.destroy?.();
       }
