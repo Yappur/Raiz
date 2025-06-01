@@ -5,6 +5,10 @@ import useWalletStore from "../store/useWalletStore";
 import ModalCertificate from "../components/Modals/ModalCertificate";
 import usePDFExport from "../hooks/usePDFExport";
 
+import eyeIcon from "../assets/icons/eye-icon.svg";
+import fileIcon from "../assets/icons/file-icon.svg";
+import QRIcon from "../assets/icons/QR-icon.svg";
+
 const exampleProducts = [
   {
     name: "Camisa Origen",
@@ -210,42 +214,38 @@ export function ProductListPage() {
                 <div className="flex justify-center gap-4">
                   <button
                     onClick={() => handleViewCertificate(product)}
-                    className="flex items-center gap-2 px-3 py-2 text-sm text-blue-600 hover:text-blue-800 hover:bg-blue-50 rounded-md transition-colors"
+                    className="flex items-center gap-2 px-3 py-2 text-sm rounded-md transition-colors"
                     title="Ver certificado"
                   >
-                    <svg
-                      width="16"
-                      height="16"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path
-                        d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"
-                        fill="currentColor"
-                      />
-                    </svg>
-                    Ver
+                    <img
+                      src={eyeIcon}
+                      alt="Ver"
+                      className="cursor-pointer transition-transform duration-400 ease-in-out hover:scale-140"
+                    />
                   </button>
 
                   <button
                     onClick={() => handleDownloadCertificate(product)}
-                    className="flex items-center gap-2 px-3 py-2 text-sm text-green-600 hover:text-green-800 hover:bg-green-50 rounded-md transition-colors"
+                    className="flex items-center gap-2 px-3 py-2 text-sm rounded-md transition-colors"
                     title="Descargar certificado"
                   >
-                    <svg
-                      width="16"
-                      height="16"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path
-                        d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"
-                        fill="currentColor"
-                      />
-                    </svg>
-                    Descargar
+                    <img
+                      src={fileIcon}
+                      alt="download File"
+                      className="cursor-pointer transition-transform duration-400 ease-in-out hover:scale-140"
+                    />
+                  </button>
+
+                  <button
+                    onClick={() => handleDownloadCertificate(product)}
+                    className="flex items-center gap-2 px-3 py-2 text-sm  rounded-md transition-colors"
+                    title="Descargar QR"
+                  >
+                    <img
+                      src={QRIcon}
+                      alt="download QR"
+                      className="cursor-pointer transition-transform duration-400 ease-in-out hover:scale-140"
+                    />
                   </button>
                 </div>
               </div>
@@ -254,19 +254,6 @@ export function ProductListPage() {
         ))}
       </div>
     );
-  };
-
-  const handleExportSelected = async () => {
-    if (rowsSelected.length === 0) {
-      alert("Por favor, selecciona al menos un certificado para exportar.");
-      return;
-    }
-
-    const selectedProducts = exampleProducts.filter((product) =>
-      rowsSelected.includes(product.name)
-    );
-
-    await exportToPDF(selectedProducts);
   };
 
   return (
@@ -350,46 +337,46 @@ export function ProductListPage() {
                         {product.location}
                       </td>
                       <td className="py-3 px-4">
-                        <div className="flex justify-center gap-2">
+                        <div className="flex justify-center gap-4">
                           {/* Botón Ver */}
                           <button
                             onClick={() => handleViewCertificate(product)}
-                            className="p-2 text-blue-600 hover:text-blue-800 hover:bg-blue-50 rounded-md transition-colors"
+                            className="p-2 rounded-md"
                             title="Ver certificado"
                           >
-                            <svg
-                              width="18"
-                              height="18"
-                              viewBox="0 0 24 24"
-                              fill="none"
-                              xmlns="http://www.w3.org/2000/svg"
-                            >
-                              <path
-                                d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"
-                                fill="currentColor"
-                              />
-                            </svg>
+                            <img
+                              src={eyeIcon}
+                              alt="Ver"
+                              className="cursor-pointer transition-transform duration-400 ease-in-out hover:scale-140"
+                            />
                           </button>
 
                           {/* Botón Descargar */}
                           <button
                             onClick={() => handleDownloadCertificate(product)}
-                            className="p-2 text-green-600 hover:text-green-800 hover:bg-green-50 rounded-md transition-colors"
+                            className="p-2 rounded-md"
                             title="Descargar certificado"
                             disabled={isExporting}
                           >
-                            <svg
-                              width="18"
-                              height="18"
-                              viewBox="0 0 24 24"
-                              fill="none"
-                              xmlns="http://www.w3.org/2000/svg"
-                            >
-                              <path
-                                d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"
-                                fill="currentColor"
-                              />
-                            </svg>
+                            <img
+                              src={fileIcon}
+                              alt="Descargar Certificate"
+                              className="cursor-pointer transition-transform duration-400 ease-in-out hover:scale-140"
+                            />
+                          </button>
+
+                          {/* Botón Descargar QR */}
+                          <button
+                            onClick={() => handleDownloadCertificate(product)}
+                            className="p-2 rounded-md"
+                            title="Descargar QR"
+                            disabled={isExporting}
+                          >
+                            <img
+                              src={QRIcon}
+                              alt="Descargar QR"
+                              className="cursor-pointer transition-transform duration-400 ease-in-out hover:scale-140"
+                            />
                           </button>
                         </div>
                       </td>
