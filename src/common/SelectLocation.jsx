@@ -1,191 +1,171 @@
 import React, { useState, useEffect } from "react";
 import Select from "react-select";
 import { Country, State, City } from "country-state-city";
+import arrowDown from "../assets/icons/arrowDown.svg";
 
-const SelectLocation = () => {
-  const [selectedCountry, setSelectedCountry] = useState(null);
-  const [selectedState, setSelectedState] = useState(null);
-  const [selectedCity, setSelectedCity] = useState(null);
-
-  const [countryOptions, setCountryOptions] = useState([]);
-  const [stateOptions, setStateOptions] = useState([]);
-  const [cityOptions, setCityOptions] = useState([]);
+const SelectLocation = ({
+  value,
+  onChange,
+  error,
+  placeholder = "Busca tu ciudad...",
+}) => {
+  const [todasLasUbicaciones, setTodasLasUbicaciones] = useState([]);
+  const [ubicacionSeleccionada, setUbicacionSeleccionada] = useState(null);
 
   useEffect(() => {
-    const countries = Country.getAllCountries();
-    const argentina = countries.find((country) => country.isoCode === "AR");
+    const cargarUbicaciones = () => {
+      const argentina = Country.getCountryByCode("AR");
+      if (argentina) {
+        const estadosArgentina = State.getStatesOfCountry("AR");
+        const ubicaciones = [];
 
-    if (argentina) {
-      const argentinaOption = {
-        value: argentina.isoCode,
-        label: argentina.name,
-      };
+        estadosArgentina.forEach((estado) => {
+          const ciudadesEstado = City.getCitiesOfState("AR", estado.isoCode);
 
-      setCountryOptions([argentinaOption]);
-      setSelectedCountry(argentinaOption);
+          ciudadesEstado.forEach((ciudad) => {
+            ubicaciones.push({
+              value: `${ciudad.name}, ${estado.name}`,
+              label: `${ciudad.name}, ${estado.name}`,
+              ciudad: ciudad.name,
+              provincia: estado.name,
+              searchText: `${ciudad.name} ${estado.name}`.toLowerCase(),
+            });
+          });
 
-      // Cargar provincias de Argentina automáticamente
-      loadStates(argentina.isoCode);
-    }
-  }, []);
+          ubicaciones.push({
+            value: estado.name,
+            label: estado.name,
+            ciudad: "",
+            provincia: estado.name,
+            searchText: estado.name.toLowerCase(),
+            esSoloProvincia: true,
+          });
+        });
 
-  // Función para cargar provincias/estados
-  const loadStates = (countryCode) => {
-    const states = State.getStatesOfCountry(countryCode);
-    const stateOptions = states.map((state) => ({
-      value: state.isoCode,
-      label: state.name,
-      countryCode: state.countryCode,
-    }));
+        ubicaciones.sort((a, b) => a.label.localeCompare(b.label));
 
-    setStateOptions(stateOptions);
-    setSelectedState(null);
-    setSelectedCity(null);
-    setCityOptions([]);
-  };
-
-  // Función para cargar ciudades
-  const loadCities = (countryCode, stateCode) => {
-    const cities = City.getCitiesOfState(countryCode, stateCode);
-    const cityOptions = cities.map((city) => ({
-      value: city.name,
-      label: city.name,
-    }));
-
-    setCityOptions(cityOptions);
-    setSelectedCity(null);
-  };
-
-  // Manejar cambio de provincia
-  const handleStateChange = (selectedOption) => {
-    setSelectedState(selectedOption);
-
-    if (selectedOption && selectedCountry) {
-      loadCities(selectedCountry.value, selectedOption.value);
-    } else {
-      setCityOptions([]);
-      setSelectedCity(null);
-    }
-  };
-
-  // Manejar cambio de ciudad
-  const handleCityChange = (selectedOption) => {
-    setSelectedCity(selectedOption);
-  };
-
-  // Manejar envío del formulario
-  const handleSubmit = (e) => {
-    e.preventDefault();
-
-    const formData = {
-      pais: selectedCountry?.label,
-      provincia: selectedState?.label,
-      ciudad: selectedCity?.label,
+        setTodasLasUbicaciones(ubicaciones);
+      }
     };
 
-    console.log("Datos del formulario:", formData);
-    alert(
-      `Seleccionaste: ${formData.ciudad}, ${formData.provincia}, ${formData.pais}`
-    );
+    cargarUbicaciones();
+  }, []);
+
+  const handleUbicacionChange = (ubicacionSeleccionada) => {
+    setUbicacionSeleccionada(ubicacionSeleccionada);
+
+    if (ubicacionSeleccionada) {
+      onChange(ubicacionSeleccionada.value);
+    } else {
+      onChange("");
+    }
   };
 
-  // Estilos personalizados para react-select
+  useEffect(() => {
+    if (value && todasLasUbicaciones.length > 0) {
+      const ubicacionEncontrada = todasLasUbicaciones.find(
+        (u) => u.value === value
+      );
+      setUbicacionSeleccionada(ubicacionEncontrada || null);
+    } else if (!value) {
+      setUbicacionSeleccionada(null);
+    }
+  }, [value, todasLasUbicaciones]);
+
+  const filterOption = (option, inputValue) => {
+    if (!inputValue) return true;
+    const searchValue = inputValue.toLowerCase();
+    return option.data.searchText.includes(searchValue);
+  };
+
+  const DropdownIndicator = () => (
+    <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+      <img src={arrowDown} className="w-5 h-5" />
+    </div>
+  );
+
   const customStyles = {
     control: (provided, state) => ({
       ...provided,
-      borderColor: state.isFocused ? "#3b82f6" : "#d1d5db",
-      boxShadow: state.isFocused ? "0 0 0 1px #3b82f6" : "none",
+      backgroundColor: "white",
+      borderColor: error ? "#ef4444" : state.isFocused ? "#fb923c" : "#d1d5db",
+      boxShadow: state.isFocused ? "0 0 0 2px rgba(251, 146, 60, 0.4)" : "none",
+      borderWidth: "1px",
+      borderRadius: "0.375rem",
+      padding: "3px 0",
+      minHeight: "38px",
+      fontSize: "14px",
       "&:hover": {
-        borderColor: "#9ca3af",
+        borderColor: error ? "#ef4444" : "#fb923c",
       },
     }),
+
     option: (provided, state) => ({
       ...provided,
-      backgroundColor: state.isSelected
-        ? "#3b82f6"
-        : state.isFocused
-        ? "#dbeafe"
-        : "white",
-      color: state.isSelected ? "white" : "#374151",
+      backgroundColor: "#f3f4f6",
+      color: "#374151",
+      cursor: "pointer",
+      fontSize: "14px",
+      paddingTop: "8px",
+      paddingBottom: "8px",
+      paddingLeft: "12px",
+      paddingRight: "12px",
+      fontWeight: state.data.esSoloProvincia ? "600" : "400",
+      borderBottom: state.data.esSoloProvincia ? "1px solid #e5e7eb" : "none",
+    }),
+
+    placeholder: (provided) => ({
+      ...provided,
+      color: "#9ca3af",
+    }),
+
+    singleValue: (provided) => ({
+      ...provided,
+      color: "#111827",
+    }),
+
+    menu: (provided) => ({
+      ...provided,
+      backgroundColor: "white",
+      border: "1px solid #d1d5db",
+      borderRadius: "0.375rem",
+      boxShadow: "0 1px 3px rgba(0, 0, 0, 0.1)",
+      marginTop: "4px",
+      zIndex: 10,
+    }),
+
+    menuList: (provided) => ({
+      ...provided,
+      maxHeight: "160px",
+      paddingTop: "0",
+      paddingBottom: "0",
+      overflowY: "auto",
     }),
   };
-
   return (
-    <div className="max-w-md mx-auto mt-8 p-6 bg-white rounded-lg shadow-lg">
-      <form onSubmit={handleSubmit} className="space-y-4">
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
-            País
-          </label>
-          <Select
-            value={selectedCountry}
-            onChange={setSelectedCountry}
-            options={countryOptions}
-            isSearchable={false}
-            isDisabled={true}
-            placeholder="País"
-            styles={customStyles}
-          />
-        </div>
+    <div>
+      <Select
+        value={ubicacionSeleccionada}
+        onChange={handleUbicacionChange}
+        options={todasLasUbicaciones}
+        styles={customStyles}
+        placeholder={placeholder}
+        components={{
+          DropdownIndicator,
+          IndicatorSeparator: () => null,
+        }}
+        isClearable
+        isSearchable
+        filterOption={filterOption}
+        noOptionsMessage={({ inputValue }) =>
+          inputValue
+            ? `No se encontraron ubicaciones para "${inputValue}"`
+            : "Escribe para buscar ubicaciones"
+        }
+        loadingMessage={() => "Cargando ubicaciones..."}
+      />
 
-        {/* Provincia */}
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
-            Provincia
-          </label>
-          <Select
-            value={selectedState}
-            onChange={handleStateChange}
-            options={stateOptions}
-            isSearchable={true}
-            placeholder="Selecciona una provincia"
-            noOptionsMessage={() => "No hay provincias disponibles"}
-            styles={customStyles}
-          />
-        </div>
-
-        {/* Ciudad */}
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
-            Ciudad
-          </label>
-          <Select
-            value={selectedCity}
-            onChange={handleCityChange}
-            options={cityOptions}
-            isSearchable={true}
-            placeholder="Selecciona una ciudad"
-            noOptionsMessage={() => "Primero selecciona una provincia"}
-            isDisabled={!selectedState}
-            styles={customStyles}
-          />
-        </div>
-
-        {/* Botón de envío */}
-        <button
-          type="submit"
-          className="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition duration-200"
-          disabled={!selectedCity}
-        >
-          Enviar Formulario
-        </button>
-      </form>
-
-      {/* Información seleccionada */}
-      {selectedCity && (
-        <div className="mt-6 p-4 bg-gray-50 rounded-md">
-          <h3 className="font-semibold text-gray-800 mb-2">
-            Ubicación seleccionada:
-          </h3>
-          <p className="text-gray-600">
-            <strong>País:</strong> {selectedCountry?.label}
-            <br />
-            <strong>Provincia:</strong> {selectedState?.label}
-            <br />
-            <strong>Ciudad:</strong> {selectedCity?.label}
-          </p>
-        </div>
-      )}
+      {error && <p className="text-red-500 text-sm mt-1">{error}</p>}
     </div>
   );
 };

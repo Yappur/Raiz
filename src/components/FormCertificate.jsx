@@ -13,7 +13,6 @@ const FormCertificate = () => {
   const [tipoProducto, setTipoProducto] = useState("");
   const [lugarProduccion, setLugarProduccion] = useState("");
   const [mostrarTipoSelect, setMostrarTipoSelect] = useState(false);
-  const [mostrarLugarSelect, setMostrarLugarSelect] = useState(false);
 
   const [nombre, setNombre] = useState("");
   const [emisor, setEmisor] = useState("");
@@ -24,7 +23,7 @@ const FormCertificate = () => {
   const formatearFecha = (fechaString) => {
     if (!fechaString) return "";
     const fecha = new Date(fechaString);
-    return fecha.toLocaleDateString("es-ES", {
+    return fecha.toLocaleDateString("es-AR", {
       weekday: "long",
       year: "numeric",
       month: "long",
@@ -45,13 +44,6 @@ const FormCertificate = () => {
     { value: "papeleria", label: "Papelería" },
     { value: "textiles", label: "Textiles" },
     { value: "otro", label: "Otro." },
-  ];
-
-  const lugaresProduccion = [
-    { value: "buenosaires", label: "Buenos Aires" },
-    { value: "cordoba", label: "Córdoba" },
-    { value: "mendoza", label: "Mendoza" },
-    { value: "otro", label: "Otro" },
   ];
 
   const validarFormulario = () => {
@@ -77,7 +69,7 @@ const FormCertificate = () => {
       nuevosErrores.fecha = "Este campo es obligatorio";
     }
 
-    if (!lugarProduccion) {
+    if (!lugarProduccion.trim()) {
       nuevosErrores.lugarProduccion = "Este campo es obligatorio";
     }
 
@@ -114,7 +106,6 @@ const FormCertificate = () => {
     setErrores({});
     setMostrarCalendar(false);
     setMostrarTipoSelect(false);
-    setMostrarLugarSelect(false);
   };
 
   return (
@@ -265,51 +256,16 @@ const FormCertificate = () => {
               )}
             </div>
 
-            <div className="relative">
+            <div>
               <label className="block text-sm font-medium mb-1">
                 Lugar de producción
               </label>
-              <button
-                type="button"
-                className={`w-full px-3 py-2 border rounded-md shadow-sm text-left focus:outline-none focus:ring-2 focus:ring-orange-400 flex justify-between items-center ${
-                  errores.lugarProduccion ? "border-red-500" : "border-gray-300"
-                }`}
-                onClick={() => setMostrarLugarSelect(!mostrarLugarSelect)}
-              >
-                <span
-                  className={
-                    lugarProduccion ? "text-gray-900" : "text-gray-400"
-                  }
-                >
-                  {lugarProduccion
-                    ? lugaresProduccion.find((l) => l.value === lugarProduccion)
-                        ?.label
-                    : "Elegí un lugar desde el dropdown"}
-                </span>
-                <img src={arrowDown} alt="arrowDown" className="h-5 w-5" />
-              </button>
-              {mostrarLugarSelect && (
-                <div className="absolute z-10 w-full mt-1 bg-white border border-gray-300 rounded-md shadow-lg">
-                  {lugaresProduccion.map((lugar) => (
-                    <button
-                      key={lugar.value}
-                      type="button"
-                      className="w-full px-3 py-2 text-left hover:bg-gray-100 focus:bg-gray-100 focus:outline-none first:rounded-t-md last:rounded-b-md"
-                      onClick={() => {
-                        setLugarProduccion(lugar.value);
-                        setMostrarLugarSelect(false);
-                      }}
-                    >
-                      {lugar.label}
-                    </button>
-                  ))}
-                </div>
-              )}
-              {errores.lugarProduccion && (
-                <p className="text-red-500 text-sm mt-1">
-                  {errores.lugarProduccion}
-                </p>
-              )}
+              <SelectLocation
+                value={lugarProduccion}
+                onChange={setLugarProduccion}
+                error={errores.lugarProduccion}
+                placeholder="Selecciona provincia y ciudad"
+              />
             </div>
           </div>
 
