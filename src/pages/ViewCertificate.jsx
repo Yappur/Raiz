@@ -7,11 +7,14 @@ import { useStore } from "zustand";
 import useAppStore from "../store/useAppStore";
 import usePDFExport from "../hooks/usePDFExport";
 import Button from "../components/common/Button";
+import QRCode from "react-qr-code";
 
 function ViewCertificate() {
   const { id } = useParams();
   const { setLoading, isLoading } = useStore(useAppStore);
   const { exportToPDF, isExporting } = usePDFExport();
+
+  const [QRCodeValue, setQRCodeValue] = useState("");
 
   const [certificate, setCertificate] = useState();
   const [showQRScanner, setShowQRScanner] = useState(false);
@@ -29,6 +32,7 @@ function ViewCertificate() {
       const certification = await getCertificationById(provider, id);
       console.log(certification);
       setCertificate(certification);
+      setQRCodeValue(certification.link);
       setLoading(false);
     };
     handleCertification();
@@ -45,8 +49,8 @@ function ViewCertificate() {
           <div className="text-gray-500">Obteniendo certificado...</div>
         </div>
       ) : (
-        <article className="justify-center flex flex-col-reverse px-4 md:flex-row gap-4 mt-8">
-          <section className="flex flex-col gap-y-6 md:gap-y-8 md:max-w-[50%]">
+        <article className="justify-evenly flex flex-col-reverse px-8 md:flex-row gap-x-2 gap-y-8 mt-8">
+          <section className="flex flex-col gap-y-6 md:gap-y-8 md:max-w-[40%]">
             <h2 className="font-semibold text-2xl mb-1">{certificate?.name}</h2>
             <p className="font-light">
               <span className="font-medium">Tipo de producto: </span>
@@ -88,7 +92,7 @@ function ViewCertificate() {
             </footer>
           </section>
           <section className="flex items-center justify-center md:items-start">
-            <div className="bg-black w-60 h-60"></div>
+            <QRCode value={QRCodeValue} size={256} />
           </section>
         </article>
       )}

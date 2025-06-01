@@ -50,12 +50,17 @@ const usePDFExport = () => {
               <p><span class="label">Lugar de Producción: </span>${
                 certificate.location
               }</p>
-              <p><span class="label">Link: </span>${
-                certificate.link
-               }</p>
+              <p><span class="label">Link: </span>${certificate.link}</p>
               <p class="description"><span class="label">Descripción: </span>${
                 certificate.description
               }</p>
+              ${certificate.image ? 
+              `<div style="display: flex; justify-content: end; position: absolute; align-items: center; right: 30%; top: -10">
+                <div style="background-color: #000000; padding-top: 32px; padding-right: '16px'; padding-left: 16px; padding-bottom: 16px; display: flex; align-items: end">
+                  <img src="${certificate.image}" alt="QR" style="width: 100px; height: 100px; border: 4px solid white;" />
+                </div>
+              </div>`
+              : ""}
             </div>
           </div>
         </div>
@@ -89,7 +94,7 @@ const usePDFExport = () => {
             
             .certificate-page {
               min-height: 100vh;
-              padding: 32px;
+              padding: 16px;
               display: flex;
               align-items: center;
               justify-content: center;

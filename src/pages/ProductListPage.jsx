@@ -1,10 +1,12 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import QRCode from "react-qr-code";
 import ModalFormCertificate from "../components/Modals/ModalFormCertificate";
 import { useStore } from "zustand";
 import useWalletStore from "../store/useWalletStore";
 import ModalCertificate from "../components/Modals/ModalCertificate";
 import usePDFExport from "../hooks/usePDFExport";
 import { getCertificationByAddress } from "../utils/contractMethods";
+import { toPng } from "html-to-image"; // npm install html-to-image
 
 //icons
 import eyeIcon from "../assets/icons/eye-icon.svg";
@@ -15,7 +17,7 @@ import paginationRight from "../assets/icons/pagination-right.svg";
 import Button from "../components/common/Button";
 
 export function ProductListPage() {
-  const { getDisplayName, signer, isConnected, address, provider } =
+  const { getDisplayName, isConnected, address, provider } =
     useStore(useWalletStore);
   const { exportToPDF, isExporting } = usePDFExport();
 
@@ -112,6 +114,14 @@ export function ProductListPage() {
   };
 
   const handleDownloadCertificate = async (product) => {
+    const hiddenQR = document.getElementById(`qr-id-${product.id}`);
+    hiddenQR.style.visibility = "visible";
+    const node = qrRefs.current[product.id];
+    if (!node) return;
+    const image = await toPng(node);
+
+    product.image = image;
+
     await exportToPDF([product]);
   };
 
@@ -218,7 +228,6 @@ export function ProductListPage() {
         </div>
       );
     }
-
     return (
       <div className="space-y-4">
         {products.map((product) => (
@@ -278,7 +287,7 @@ export function ProductListPage() {
                   </button>
 
                   <button
-                    onClick={() => handleDownloadCertificate(product)}
+                    onClick={() => downloadQRCode(product.id)}
                     className="flex items-center gap-2 px-3 py-2 text-sm rounded-md transition-colors"
                     title="Descargar QR"
                     disabled={isExporting}
@@ -289,6 +298,32 @@ export function ProductListPage() {
                       className="cursor-pointer transition-transform duration-400 ease-in-out hover:scale-140"
                     />
                   </button>
+                  <div
+                    id={`qr-id-${product.id}`}
+                    style={{
+                      visibility: "hidden",
+                      position: "absolute",
+                      bottom: "4000px",
+                    }}
+                  >
+                    <div
+                      ref={(el) => (qrRefs.current[product.id] = el)}
+                      style={{
+                        background: "white",
+                        padding: 8, // Más padding ayuda a los lectores
+                        display: "inline-block",
+                        borderRadius: 4,
+                      }}
+                    >
+                      <QRCode
+                        value={product.link}
+                        bgColor="#FFFFFF"
+                        fgColor="#000000"
+                        level="Q"
+                        size={128}
+                      />
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -303,6 +338,23 @@ export function ProductListPage() {
     setTimeout(() => {
       handleRefreshCertificates();
     }, 1000);
+  };
+
+  const qrRefs = useRef({});
+
+  const downloadQRCode = async (productId) => {
+    const hiddenQR = document.getElementById(`qr-id-${productId}`);
+    hiddenQR.style.visibility = "visible";
+    const node = qrRefs.current[productId];
+    if (!node) return;
+    const dataUrl = await toPng(node);
+    const link = document.createElement("a");
+    link.href = dataUrl;
+    link.download = `QRCode-${productId}.png`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    hiddenQR.style.visibility = "hidden";
   };
 
   return (
@@ -440,7 +492,7 @@ export function ProductListPage() {
                             </button>
 
                             <button
-                              onClick={() => handleDownloadCertificate(product)}
+                              onClick={() => downloadQRCode(product.id)}
                               className="p-2 rounded-md"
                               title="Descargar QR"
                               disabled={isExporting}
@@ -451,6 +503,32 @@ export function ProductListPage() {
                                 className="cursor-pointer transition-transform duration-400 ease-in-out hover:scale-140"
                               />
                             </button>
+                          </div>
+                          <div
+                            id={`qr-id-${product.id}`}
+                            style={{
+                              visibility: "hidden",
+                              position: "absolute",
+                              bottom: "4000px",
+                            }}
+                          >
+                            <div
+                              ref={(el) => (qrRefs.current[product.id] = el)}
+                              style={{
+                                background: "white",
+                                padding: 8, // Más padding ayuda a los lectores
+                                display: "inline-block",
+                                borderRadius: 4,
+                              }}
+                            >
+                              <QRCode
+                                value={product.link}
+                                bgColor="#FFFFFF"
+                                fgColor="#000000"
+                                level="Q"
+                                size={256}
+                              />
+                            </div>
                           </div>
                         </td>
                       </tr>
