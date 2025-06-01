@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Select from "react-select";
 import { Country, State, City } from "country-state-city";
-import arrowDown from "../assets/icons/arrowDown.svg";
+import arrowDown from "../../assets/icons/arrowDown.svg";
 
 const SelectLocation = ({
   value,

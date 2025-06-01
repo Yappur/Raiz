@@ -3,11 +3,12 @@ import arrowDown from "../assets/icons/arrowDown.svg";
 import calendar from "../assets/icons/calendarIcon.svg";
 import { useStore } from "zustand";
 import useAppStore from "../store/useAppStore";
-import SelectLocation from "../common/SelectLocation";
+import SelectLocation from "./common/SelectLocation";
 import ModalCreatedCertificate from "./Modals/ModalCreatedCertificate";
 
 import useWalletStore from "../store/useWalletStore";
 import { certificateProduct } from "../utils/contractMethods";
+import Button from "./common/Button";
 
 const FormCertificate = () => {
   const { setToast } = useStore(useAppStore);
@@ -390,20 +391,16 @@ const FormCertificate = () => {
             </div>
 
             <div className="flex justify-end space-x-4 pt-4">
-              <button
-                type="button"
-                onClick={limpiarFormulario}
-                className="px-6 py-2 border border-gray-300 rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-orange-500 transition-colors"
-              >
+              <Button color={"secondary"} onClick={limpiarFormulario}>
                 Limpiar
-              </button>
-              <button
+              </Button>
+              <Button
                 type="submit"
+                color={"primary"}
                 disabled={loading || !isConnected}
-                className="px-6 py-2 bg-[#202715] hover:bg-[#14180e] disabled:bg-gray-400 disabled:cursor-not-allowed text-white rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500 transition-colors"
               >
                 {loading ? "Emitiendo..." : "Emitir Certificado"}
-              </button>
+              </Button>
             </div>
           </form>
         </div>

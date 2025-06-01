@@ -1,4 +1,5 @@
 import usePDFExport from "../../hooks/usePDFExport";
+import Button from "../common/Button";
 const ModalCertificate = ({ isOpen, onClose, certificate }) => {
   if (!isOpen) return null;
   const { exportToPDF, isExporting } = usePDFExport();
@@ -55,19 +56,17 @@ const ModalCertificate = ({ isOpen, onClose, certificate }) => {
             </p>
           </section>
           <footer className="flex flex-col gap-y-4 mt-6">
-            <button
-              onClick={() => handleDownloadCertificate(certificate)}
+            <Button
+              onClick={handleDownloadCertificate}
+              onClickParams={[certificate]}
               disabled={isExporting}
-              className="py-2 px-4 text-center border border-black bg-black text-white text-sm cursor-pointer hover:bg-gray-800 transition-colors"
+              color="primary"
             >
               Descargar Certificado
-            </button>
-            <button
-              onClick={onClose}
-              className="py-2 px-4 text-center border border-black text-sm cursor-pointer hover:bg-gray-50 transition-colors"
-            >
+            </Button>
+            <Button onClick={onClose} disabled={isExporting} color="secondary">
               Cerrar
-            </button>
+            </Button>
           </footer>
         </article>
       </div>

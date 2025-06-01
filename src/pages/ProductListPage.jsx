@@ -12,6 +12,7 @@ import fileIcon from "../assets/icons/file-icon.svg";
 import QRIcon from "../assets/icons/QR-icon.svg";
 import paginationLeft from "../assets/icons/pagination-left.svg";
 import paginationRight from "../assets/icons/pagination-right.svg";
+import Button from "../components/common/Button";
 
 export function ProductListPage() {
   const { getDisplayName, signer, isConnected, address, provider } =
@@ -206,12 +207,14 @@ export function ProductListPage() {
       return (
         <div className="text-center py-8">
           <div className="text-gray-500 mb-4">No tienes certificados aún</div>
-          <button
-            onClick={() => setIsFormModalOpen(true)}
-            className="px-4 py-2 bg-black text-white rounded hover:bg-gray-800"
+          <Button
+            onClick={setIsFormModalOpen}
+            color="primary"
+            onClickParams={[true]}
+            className="text-base"
           >
             Crear tu primer certificado
-          </button>
+          </Button>
         </div>
       );
     }
@@ -323,13 +326,14 @@ export function ProductListPage() {
             </h2>
           </div>
           <div className="flex flex-col sm:flex-row gap-3 w-full sm:w-auto">
-            <button
-              onClick={() => setIsFormModalOpen(true)}
-              className="py-2 px-4 text-center border border-black bg-black text-white text-sm cursor-pointer hover:bg-gray-800 transition-colors"
+            <Button
+              onClick={setIsFormModalOpen}
+              onClickParams={[true]}
               disabled={!isConnected}
+              color={"primary"}
             >
               Nuevo Certificado
-            </button>
+            </Button>
           </div>
         </div>
 
