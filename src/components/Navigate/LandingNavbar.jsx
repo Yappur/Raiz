@@ -143,16 +143,6 @@ const LandingNavbar = ({ showQRScanner, setShowQRScanner }) => {
           <div className="pt-6 pb-4 space-y-4 ">
             <button
               onClick={() => {
-                setShowQRScanner(true);
-                closeMenu();
-              }}
-              className="w-full px-7 py-3 text-md font-medium border border-black transition-colors cursor-pointer relative hover:bg-black hover:text-white text-center"
-            >
-              Escanear producto
-            </button>
-
-            <button
-              onClick={() => {
                 onWalletClick();
                 closeMenu();
               }}

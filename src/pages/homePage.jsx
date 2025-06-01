@@ -23,7 +23,6 @@ import {
 } from "../utils/homeAnimations.js";
 
 export default function Home() {
-  const { isConnected, shortAddress } = useStore(useWalletStore);
   const [hasAnimated, setHasAnimated] = useState(false);
   const [showQRScanner, setShowQRScanner] = useState(false);
 
@@ -36,31 +35,6 @@ export default function Home() {
       return () => clearTimeout(timer);
     }
   }, [hasAnimated]);
-
-  const WalletStatus = () => (
-    <AnimatePresence mode="wait">
-      {isConnected && shortAddress && (
-        <motion.div
-          key="wallet-status"
-          className="mb-8 bg-white/80 backdrop-blur-sm border border-gray-200 rounded-lg p-4 max-w-md"
-          initial={{ opacity: 0, y: -20, scale: 0.95 }}
-          animate={{ opacity: 1, y: 0, scale: 1 }}
-          exit={{ opacity: 0, y: -20, scale: 0.95 }}
-          transition={{ duration: 0.3, ease: "easeOut" }}
-        >
-          <div className="flex items-center gap-3">
-            <div className="w-3 h-3 bg-green-500 rounded-full" />
-            <div>
-              <p className="text-sm font-medium text-gray-800">
-                Wallet Conectada
-              </p>
-              <p className="text-xs text-gray-600 font-mono">{shortAddress}</p>
-            </div>
-          </div>
-        </motion.div>
-      )}
-    </AnimatePresence>
-  );
 
   const MainTitle = () => (
     <motion.div
@@ -179,6 +153,47 @@ export default function Home() {
     );
   };
 
+  const MobileMain = () => (
+    <main className="relative z-10 px-6 py-12 flex flex-col items-center justify-center min-h-[70vh] text-center">
+      <motion.h2
+        className="text-7xl font-medium text-black mb-12 leading-tight"
+        initial={hasAnimated ? false : { opacity: 0, y: 30 }}
+        animate={hasAnimated ? false : { opacity: 1, y: 0 }}
+        transition={hasAnimated ? {} : { duration: 0.8, delay: 0.2 }}
+      >
+        Volvé al <br />
+        origen
+      </motion.h2>
+
+      <motion.div
+        className="flex flex-col space-y-8 gap-4 w-full max-w-sm"
+        initial={hasAnimated ? false : { opacity: 0, y: 30 }}
+        animate={hasAnimated ? false : { opacity: 1, y: 0 }}
+        transition={hasAnimated ? {} : { duration: 0.8, delay: 0.5 }}
+      >
+        <motion.button
+          className="bg-black text-white py-4 px-6 font-medium text-lg hover:bg-gray-800 transition-colors duration-300"
+          whileHover={{ scale: 1.02 }}
+          whileTap={{ scale: 0.98 }}
+          onClick={() => setShowQRScanner(true)}
+        >
+          Escanea tu producto
+        </motion.button>
+
+        <motion.button
+          className="underline text-black py-4 px-8 font-medium text-lg transition-colors duration-300"
+          whileHover={{ scale: 1.02 }}
+          whileTap={{ scale: 0.98 }}
+          onClick={() => {
+            console.log("Segundo botón clickeado");
+          }}
+        >
+          Chatea con Broto
+        </motion.button>
+      </motion.div>
+    </main>
+  );
+
   return (
     <>
       <motion.div
@@ -204,9 +219,8 @@ export default function Home() {
           />
         </motion.div>
 
-        <main className="relative z-10 px-8 py-10 mx-12">
-          <WalletStatus />
-
+        {/* Main de Desktop */}
+        <main className="relative z-10 px-8 py-10 mx-12 hidden md:block">
           <motion.div
             className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-16"
             variants={hasAnimated ? {} : containerVariants}
@@ -214,11 +228,17 @@ export default function Home() {
             animate={hasAnimated ? false : "visible"}
           >
             <MainTitle />
-          <ScanSection />
+            <ScanSection />
           </motion.div>
 
           <InfoCards />
         </main>
+
+        {/*  Main de móvil */}
+
+        <div className="block md:hidden">
+          <MobileMain />
+        </div>
       </motion.div>
     </>
   );
