@@ -1,6 +1,7 @@
 import { NavLink, useNavigate } from "react-router-dom";
 import RaizFavicon from "../../assets/RaizFavicon.svg?react";
 import HomeIcon from "../../assets/icons/homeIcon.svg?react";
+import TicketIcon from "../../assets/icons/ticketIcon.svg?react";
 import FolderIcon from "../../assets/icons/folderIcon.svg?react";
 
 import ExitIcon from "../../assets/icons/SideBar/exit-icon.svg?react";
@@ -45,7 +46,7 @@ export const Sidebar = () => {
         </NavLink>
         <NavLink to="/producers/new-certificate">
           {({ isActive }) => (
-            <HomeIcon
+            <TicketIcon
               className="hover:stroke-icon-hover transition-colors w-6 h-6 md:w-auto md:h-auto"
               stroke={isActive ? "#FF7F40" : "black"}
             />
