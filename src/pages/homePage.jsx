@@ -1,7 +1,5 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { useStore } from "zustand";
-import useWalletStore from "../store/useWalletStore";
 import LandingNavbar from "../components/Navigate/LandingNavbar.jsx";
 import noise from "../assets/background/noise.png";
 import raizBg from "../assets/background/raiz-bg.svg";
@@ -10,6 +8,10 @@ import reverse from "../assets/icons/reverse.svg";
 import success from "../assets/icons/success.svg";
 import arrowLeft from "../assets/icons/arrowLeft.svg";
 import BrotoBot from "../components/BrotoBot.jsx";
+
+// Importaciones específicas para la landing
+import BotBrotoImg from "../assets/background/BotBroto.png";
+import corrugatedRightArrow from "../assets/background/corrugatedRightArrow.svg";
 
 import {
   containerVariants,
@@ -154,6 +156,60 @@ export default function Home() {
     );
   };
 
+  // Nuevo componente para el BrotoBot personalizado de la landing
+  const LandingBrotoBot = () => (
+    <motion.div
+      className="fixed bottom-8 left-8 z-20 hidden lg:block"
+      initial={{ opacity: 0, scale: 0.8, y: 50 }}
+      animate={{ opacity: 1, scale: 1, y: 0 }}
+      transition={{ duration: 0.8, delay: 2.5 }}
+    >
+      {/* Flecha apuntando al botón del BrotoBot original */}
+      <motion.img
+        src={corrugatedRightArrow}
+        alt="Flecha apuntando al botón"
+        className="absolute -top-8 -right-20 w-16 h-auto transform -rotate-12"
+        initial={{ opacity: 0, x: -20 }}
+        animate={{ opacity: 1, x: 0 }}
+        transition={{ duration: 0.6, delay: 3 }}
+      />
+
+      {/* Imagen del bot */}
+      <motion.div
+        className="relative cursor-pointer"
+        whileHover={{ scale: 1.05 }}
+        whileTap={{ scale: 0.95 }}
+        onClick={() => {
+          // Aquí puedes agregar la lógica para abrir el chat
+          console.log("Broto Bot clickeado");
+        }}
+      >
+        <img
+          src={BotBrotoImg}
+          alt="Broto Bot"
+          className="w-20 h-20 object-contain drop-shadow-lg"
+        />
+
+        {/* Efecto de pulso */}
+        <motion.div
+          className="absolute inset-0 bg-green-400 rounded-full opacity-20"
+          animate={{ scale: [1, 1.2, 1] }}
+          transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+        />
+      </motion.div>
+
+      {/* Texto indicativo cerca del bot */}
+      <motion.div
+        className="absolute -top-12 left-1/2 transform -translate-x-1/2 text-black font-medium text-sm whitespace-nowrap"
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.4, delay: 3.5 }}
+      >
+        ¡Hablemos!
+      </motion.div>
+    </motion.div>
+  );
+
   const MobileMain = () => (
     <main className="relative z-10 px-6 py-12 flex flex-col items-center justify-center min-h-[70vh] text-center">
       <motion.h2
@@ -198,21 +254,12 @@ export default function Home() {
   return (
     <>
       <motion.div
-        className="min-h-screen w-full bg-cover bg-center bg-no-repeat overflow-hidden"
+        className="min-h-screen w-full bg-cover bg-center bg-no-repeat overflow-hidden relative"
         style={{ backgroundImage: `url("${noise}"), url("${bgBase64}")` }}
         initial={hasAnimated ? false : "hidden"}
         animate={hasAnimated ? false : "visible"}
         variants={hasAnimated ? {} : containerVariants}
       >
-        <motion.img
-          src={raizBg || "/placeholder.svg"}
-          alt="Raiz background"
-          className="fixed bottom-0 right-0 w-auto h-auto max-w-full max-h-full object-contain z-0 pointer-events-none hidden lg:block"
-          variants={hasAnimated ? {} : backgroundImageVariants}
-          initial={hasAnimated ? false : "hidden"}
-          animate={hasAnimated ? false : "visible"}
-        />
-
         <motion.div {...(hasAnimated ? {} : transitionConfigs.navbar)}>
           <LandingNavbar
             showQRScanner={showQRScanner}
@@ -233,14 +280,18 @@ export default function Home() {
           </motion.div>
 
           <InfoCards />
+
+          {/* BrotoBot original para otras funcionalidades */}
           <BrotoBot />
         </main>
 
-        {/*  Main de móvil */}
-
+        {/* Main de móvil */}
         <div className="block md:hidden">
           <MobileMain />
         </div>
+
+        {/* BrotoBot personalizado solo para la landing */}
+        <LandingBrotoBot />
       </motion.div>
     </>
   );
