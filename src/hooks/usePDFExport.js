@@ -55,8 +55,8 @@ const usePDFExport = () => {
                 certificate.description
               }</p>
               ${certificate.image ? 
-              `<div style="display: flex; justify-content: end; position: absolute; align-items: center; right: 30%; top: -10">
-                <div style="background-color: #000000; padding-top: 32px; padding-right: '16px'; padding-left: 16px; padding-bottom: 16px; display: flex; align-items: end">
+              `<div style="display: flex; justify-content: end; position: absolute; align-items: center; right: 10%; top: -10">
+                <div style="background-color: #000000; padding-top: 64px; padding-right: 16px; padding-left: 16px; padding-bottom: 16px; display: flex; align-items: end">
                   <img src="${certificate.image}" alt="QR" style="width: 100px; height: 100px; border: 4px solid white;" />
                 </div>
               </div>`
@@ -94,18 +94,18 @@ const usePDFExport = () => {
             
             .certificate-page {
               min-height: 100vh;
-              padding: 16px;
+              padding-bottom: 16px;
+              padding-left: 16px;
+              padding-right: 16px;
               display: flex;
               align-items: center;
               justify-content: center;
             }
             
             .certificate-container {
-              max-width: 540px;
               width: 100%;
-              padding: 32px;
-              background-color: white;
-              border: 1px solid #e5e7eb;
+              padding-left: 64px;
+              padding-right: 32px;
               border-radius: 8px;
               box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
             }
@@ -119,11 +119,10 @@ const usePDFExport = () => {
             h2 {
               font-weight: 600;
               font-size: 24px;
-              margin-bottom: 16px;
               color: #111827;
-              text-align: center;
-              border-bottom: 2px solid #f3f4f6;
               padding-bottom: 12px;
+              margin-top: 100px;
+              max-width: 400px;
             }
             
             p {
@@ -140,9 +139,6 @@ const usePDFExport = () => {
             .description {
               text-align: justify;
               line-height: 1.6;
-              margin-top: 8px;
-              padding-top: 16px;
-              border-top: 1px solid #f3f4f6;
             }
             
             @media print {
@@ -158,13 +154,14 @@ const usePDFExport = () => {
               }
               
               .certificate-page {
-                padding: 20px;
+                padding-bottom: 10px;
+                padding-left: 10px;
+                padding-right: 10px;
                 min-height: auto;
               }
               
               .certificate-container {
                 box-shadow: none;
-                border: 1px solid #ccc;
                 margin-bottom: 0;
               }
               
