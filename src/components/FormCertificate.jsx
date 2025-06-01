@@ -11,7 +11,7 @@ import { certificateProduct } from "../utils/contractMethods";
 
 const FormCertificate = () => {
   const { setToast } = useStore(useAppStore);
-  const { signer, isConnected, address } = useWalletStore();
+  const { signer, isConnected } = useWalletStore();
 
   const [fecha, setFecha] = useState("");
   const [mostrarCalendar, setMostrarCalendar] = useState(false);
@@ -41,18 +41,18 @@ const FormCertificate = () => {
   };
 
   const tiposProducto = [
-    { value: "indumentaria", label: "Indumentaria" },
-    { value: "tecnologia", label: "Tecnología" },
-    { value: "alimentos", label: "Alimentos" },
-    { value: "bebidas", label: "Bebidas" },
-    { value: "calzado", label: "Calzado" },
-    { value: "artesanias", label: "Artesanía" },
-    { value: "cosmeticos", label: "Cosméticos" },
-    { value: "mobiliario", label: "Mobiliario" },
-    { value: "joyeria", label: "Joyería" },
-    { value: "papeleria", label: "Papelería" },
-    { value: "textiles", label: "Textiles" },
-    { value: "otro", label: "Otro." },
+    { value: "Indumentaria", label: "Indumentaria" },
+    { value: "Tecnologia", label: "Tecnología" },
+    { value: "Alimentos", label: "Alimentos" },
+    { value: "Bebidas", label: "Bebidas" },
+    { value: "Calzado", label: "Calzado" },
+    { value: "Artesaniía", label: "Artesanía" },
+    { value: "Cosméticos", label: "Cosméticos" },
+    { value: "Mobiliario", label: "Mobiliario" },
+    { value: "Joyería", label: "Joyería" },
+    { value: "Papelería", label: "Papelería" },
+    { value: "Textiles", label: "Textiles" },
+    { value: "Otro", label: "Otro." },
   ];
 
   const validarFormulario = () => {
