@@ -1,5 +1,11 @@
+import usePDFExport from "../../hooks/usePDFExport";
 const ModalCertificate = ({ isOpen, onClose, certificate }) => {
   if (!isOpen) return null;
+  const { exportToPDF, isExporting } = usePDFExport();
+
+  const handleDownloadCertificate = async (product) => {
+    await exportToPDF([product]);
+  };
 
   const handleOverlayClick = (e) => {
     if (e.target === e.currentTarget) {
@@ -15,7 +21,7 @@ const ModalCertificate = ({ isOpen, onClose, certificate }) => {
         onClick={handleOverlayClick}
       >
         <article className="bg-white rounded-lg shadow-xl max-w-[540px] p-8 w-full overflow-y-auto">
-          <section className="flex flex-col gap-y-4 mt-16">
+          <section className="flex flex-col gap-y-4">
             <h2 className="font-semibold text-2xl mb-1">{certificate.name}</h2>
             <p className="font-light">
               <span className="font-medium">Tipo de producto: </span>
@@ -43,7 +49,11 @@ const ModalCertificate = ({ isOpen, onClose, certificate }) => {
             </p>
           </section>
           <footer className="flex flex-col gap-y-4 mt-6">
-            <button className="py-2 px-4 text-center border border-black bg-black text-white text-sm cursor-pointer hover:bg-gray-800 transition-colors">
+            <button
+              onClick={() => handleDownloadCertificate(certificate)}
+              disabled={isExporting}
+              className="py-2 px-4 text-center border border-black bg-black text-white text-sm cursor-pointer hover:bg-gray-800 transition-colors"
+            >
               Descargar Certificado
             </button>
             <button

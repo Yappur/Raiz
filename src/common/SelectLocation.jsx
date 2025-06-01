@@ -96,7 +96,7 @@ const SelectLocation = ({
       minHeight: "38px",
       fontSize: "14px",
       "&:hover": {
-        borderColor: error ? "#ef4444" : "#fb923c",
+        borderColor: error ? "#ef4444" : "d1d5db",
       },
     }),
 
