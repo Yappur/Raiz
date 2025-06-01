@@ -7,6 +7,7 @@ import useAppStore from "../../store/useAppStore";
 import QRScannerModal from "../Modals/QRScannerModal.jsx";
 
 import { AnimatePresence } from "framer-motion";
+import Button from "../common/Button.jsx";
 
 const LandingNavbar = ({ showQRScanner, setShowQRScanner }) => {
   const { address, isConnected, disconnectWallet, connectWallet } =
@@ -88,16 +89,18 @@ const LandingNavbar = ({ showQRScanner, setShowQRScanner }) => {
 
           {/* Desktop Menu */}
           <div className="hidden md:flex items-center gap-7">
-            <button
+            <Button
               onClick={() => setShowQRScanner(true)}
-              className="px-7 py-2 text-md font-medium border border-black transition-colors cursor-pointer relative hover:bg-black hover:text-white"
+              className="px-7 py-3 text-base font-medium"
+              color="secondary"
             >
               Escanear producto
-            </button>
-            <button
+            </Button>
+            <Button
               onClick={onWalletClick}
               disabled={isLoading}
-              className={`px-7 py-2 text-md font-medium border border-[#202715] transition-colors cursor-pointer relative ${
+              color="primary"
+              className={`px-7 py-2 text-base font-medium border border-[#202715] transition-colors cursor-pointer relative ${
                 isConnected
                   ? "bg-green-100 text-green-800 border-green-600 hover:bg-green-200"
                   : "bg-[#202715] hover:bg-[#14180e] transition-colors text-white "
@@ -107,7 +110,7 @@ const LandingNavbar = ({ showQRScanner, setShowQRScanner }) => {
                 <div className="absolute -top-1 -right-1 w-3 h-3 bg-green-500 rounded-full"></div>
               )}
               {getWalletButtonText()}
-            </button>
+            </Button>
           </div>
 
           {/* Mobile Hamburger Button */}
@@ -141,13 +144,14 @@ const LandingNavbar = ({ showQRScanner, setShowQRScanner }) => {
           }`}
         >
           <div className="pt-6 pb-4 space-y-4 ">
-            <button
+            <Button
               onClick={() => {
                 onWalletClick();
                 closeMenu();
               }}
               disabled={isLoading}
-              className={`w-full px-7 py-3 text-md font-medium border border-[#202715] transition-colors cursor-pointer relative ${
+              color="primary"
+              className={`w-full px-7 py-3 text-base font-medium ${
                 isConnected
                   ? "bg-green-100 text-green-800 border-green-600 hover:bg-green-200"
                   : "bg-[#202715] hover:bg-[#14180e] transition-colors text-white"
@@ -157,7 +161,7 @@ const LandingNavbar = ({ showQRScanner, setShowQRScanner }) => {
                 <div className="absolute top-2 right-2 w-3 h-3 bg-green-500 rounded-full"></div>
               )}
               {getWalletButtonText()}
-            </button>
+            </Button>
           </div>
         </div>
 

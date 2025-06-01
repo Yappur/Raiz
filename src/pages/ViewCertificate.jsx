@@ -6,6 +6,7 @@ import LandingNavbar from "../components/Navigate/LandingNavbar";
 import { useStore } from "zustand";
 import useAppStore from "../store/useAppStore";
 import usePDFExport from "../hooks/usePDFExport";
+import Button from "../components/common/Button";
 
 function ViewCertificate() {
   const { id } = useParams();
@@ -14,7 +15,6 @@ function ViewCertificate() {
 
   const [certificate, setCertificate] = useState();
   const [showQRScanner, setShowQRScanner] = useState(false);
-
 
   const handleDownloadCertificate = async (certificate) => {
     await exportToPDF([certificate]);
@@ -77,13 +77,14 @@ function ViewCertificate() {
               {certificate?.description}
             </p>
             <footer className="flex gap-x-4 mt-6 w-full">
-              <button
-                onClick={() => handleDownloadCertificate(certificate)}
+              <Button
+                onClick={handleDownloadCertificate}
+                onClickParams={[certificate]}
                 disabled={isExporting}
-                className="py-2 px-4 text-center border border-black bg-black text-white text-sm cursor-pointer hover:bg-gray-800 transition-colors w-[320px]"
+                className="text-sm w-[320px]"
               >
                 Descargar Certificado
-              </button>
+              </Button>
             </footer>
           </section>
           <section className="flex items-center justify-center md:items-start">

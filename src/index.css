@@ -16,8 +16,11 @@
     --color-table-body-hover: #FF7F40;
 
     /* Buttons */
-    --color-button-border: #0000008C;
-    --color-button-hover: #333333;
+    --color-button-border: #000000;
+    --color-button-primary: #000000;
+    --color-button-primary-hover: #333333;
+    --color-button-secondary: #FFFFFF;
+    --color-button-secondary-border-hover: #C7C7C7;
 
     /* Icons */
     --color-icon-hover: #FF7F40;
