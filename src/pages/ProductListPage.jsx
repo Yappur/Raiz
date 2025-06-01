@@ -13,29 +13,19 @@ import QRIcon from "../assets/icons/QR-icon.svg";
 import paginationLeft from "../assets/icons/pagination-left.svg";
 import paginationRight from "../assets/icons/pagination-right.svg";
 
-const exampleProducts = [
-  {
-    name: "Camisa Origen",
-    source: "Hilando al Sur",
-    type: "Textil",
-    date: "06-07-2027",
-    location: "Córdoba, Argentina",
-    certificationLink: "https://raiz.veri.link/tu-certificado",
-    description:
-      "Camisa confeccionada íntegramente con algodón orgánico certificado, proveniente de cultivos sostenibles que no utilizan pesticidas, fertilizantes sintéticos ni semillas genéticamente modificadas. El proceso de producción respeta tanto los ciclos naturales del suelo como a las personas involucradas en la cadena de valor. Cada prenda está hecha bajo condiciones laborales justas, promoviendo una economía circular y de comercio ético.",
-  },
-];
-
 export function ProductListPage() {
-  const { getDisplayName, signer, isConnected, address } =
+  const { getDisplayName, signer, isConnected, address, provider } =
     useStore(useWalletStore);
   const { exportToPDF, isExporting } = usePDFExport();
 
+  const [allCertificates, setAllCertificates] = useState([]);
   const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
   const [pagination, setPagination] = useState({
     page: 1,
-    totalPages: Math.ceil(exampleProducts.length / 10),
-    total: exampleProducts.length,
+    totalPages: 1,
+    total: 0,
   });
   const [rowsSelected, setRowsSelected] = useState([]);
   const [isFormModalOpen, setIsFormModalOpen] = useState(false);
@@ -54,12 +44,68 @@ export function ProductListPage() {
     return () => window.removeEventListener("resize", checkIfMobile);
   }, []);
 
+  const loadCertificates = async () => {
+    if (!isConnected || !address || !provider) {
+      console.log("Wallet no conectada o provider no disponible");
+      return;
+    }
+
+    setLoading(true);
+    setError(null);
+
+    try {
+      const certificates = await getCertificationByAddress(provider, address);
+
+      if (certificates && certificates.length > 0) {
+        const mappedCertificates = certificates.map((cert, index) => ({
+          id: index + 1,
+          name: cert.name,
+          source: cert.company,
+          type: cert.productType,
+          date: cert.productionDate,
+          location: cert.location,
+          description: cert.description,
+          creationDate: cert.creationDate,
+          certificationLink: `https://raiz.veri.link/certificado-${index + 1}`,
+        }));
+
+        setAllCertificates(mappedCertificates);
+
+        const totalPages = Math.ceil(mappedCertificates.length / 10);
+        setPagination((prev) => ({
+          ...prev,
+          totalPages,
+          total: mappedCertificates.length,
+          page: 1,
+        }));
+      } else {
+        setAllCertificates([]);
+        setPagination({
+          page: 1,
+          totalPages: 1,
+          total: 0,
+        });
+      }
+    } catch (err) {
+      console.error("Error cargando certificados:", err);
+      setError("Error al cargar los certificados");
+      setAllCertificates([]);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Cargar certificados cuando se conecta la wallet o cambia la dirección
+  useEffect(() => {
+    loadCertificates();
+  }, [isConnected, address, provider]);
+
   useEffect(() => {
     const minRange = pagination.page * 10 - 10;
     const maxRange = pagination.page * 10;
-    const paginatedProducts = exampleProducts.slice(minRange, maxRange);
+    const paginatedProducts = allCertificates.slice(minRange, maxRange);
     setProducts(paginatedProducts);
-  }, [pagination]);
+  }, [allCertificates, pagination.page]);
 
   const handlePageChange = (page) => {
     setPagination((pagination) => ({ ...pagination, page }));
@@ -72,6 +118,10 @@ export function ProductListPage() {
   const handleViewCertificate = (product) => {
     setCertificateOpened(product);
     setIsCertificateModalOpen(true);
+  };
+
+  const handleRefreshCertificates = () => {
+    loadCertificates();
   };
 
   const renderPaginationButtons = () => {
@@ -131,11 +181,47 @@ export function ProductListPage() {
   };
 
   const renderMobileCards = () => {
+    if (loading) {
+      return (
+        <div className="flex justify-center items-center py-8">
+          <div className="text-gray-500">Cargando certificados...</div>
+        </div>
+      );
+    }
+
+    if (error) {
+      return (
+        <div className="text-center py-8">
+          <div className="text-red-500 mb-4">{error}</div>
+          <button
+            onClick={handleRefreshCertificates}
+            className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+          >
+            Reintentar
+          </button>
+        </div>
+      );
+    }
+
+    if (products.length === 0) {
+      return (
+        <div className="text-center py-8">
+          <div className="text-gray-500 mb-4">No tienes certificados aún</div>
+          <button
+            onClick={() => setIsFormModalOpen(true)}
+            className="px-4 py-2 bg-black text-white rounded hover:bg-gray-800"
+          >
+            Crear tu primer certificado
+          </button>
+        </div>
+      );
+    }
+
     return (
       <div className="space-y-4">
         {products.map((product, id) => (
           <div
-            key={id}
+            key={product.id || id}
             className="bg-white border border-gray-200 rounded-lg p-4 shadow-sm hover:shadow-md transition-shadow"
           >
             <div className="flex items-start justify-between mb-3">
@@ -162,7 +248,6 @@ export function ProductListPage() {
                 <span className="font-medium">{product.location}</span>
               </div>
 
-              {/* Acciones para móvil */}
               <div className="mt-3 pt-3 border-t border-gray-100">
                 <div className="flex justify-center gap-4">
                   <button
@@ -181,6 +266,7 @@ export function ProductListPage() {
                     onClick={() => handleDownloadCertificate(product)}
                     className="flex items-center gap-2 px-3 py-2 text-sm rounded-md transition-colors"
                     title="Descargar certificado"
+                    disabled={isExporting}
                   >
                     <img
                       src={fileIcon}
@@ -191,8 +277,9 @@ export function ProductListPage() {
 
                   <button
                     onClick={() => handleDownloadCertificate(product)}
-                    className="flex items-center gap-2 px-3 py-2 text-sm  rounded-md transition-colors"
+                    className="flex items-center gap-2 px-3 py-2 text-sm rounded-md transition-colors"
                     title="Descargar QR"
+                    disabled={isExporting}
                   >
                     <img
                       src={QRIcon}
@@ -209,6 +296,13 @@ export function ProductListPage() {
     );
   };
 
+  const handleFormModalClose = () => {
+    setIsFormModalOpen(false);
+    setTimeout(() => {
+      handleRefreshCertificates();
+    }, 1000);
+  };
+
   return (
     <main className="min-h-screen bg-gray-50">
       <section className="px-4 sm:px-6 lg:px-8 py-6 w-full max-w-7xl mx-auto">
@@ -217,17 +311,23 @@ export function ProductListPage() {
           <h5 className="font-normal text-lg">Certificados</h5>
           <div className="flex justify-end items-center gap-4">
             <span className="font-normal text-lg">{getDisplayName()}</span>
+            {!isConnected && (
+              <span className="text-red-500 text-sm">Wallet no conectada</span>
+            )}
           </div>
         </header>
 
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
-          <h2 className="font-medium text-2xl sm:text-3xl">
-            Productos Certificados
-          </h2>
+          <div className="flex items-center gap-4">
+            <h2 className="font-medium text-2xl sm:text-3xl">
+              Productos Certificados
+            </h2>
+          </div>
           <div className="flex flex-col sm:flex-row gap-3 w-full sm:w-auto">
             <button
               onClick={() => setIsFormModalOpen(true)}
               className="py-2 px-4 text-center border border-black bg-black text-white text-sm cursor-pointer hover:bg-gray-800 transition-colors"
+              disabled={!isConnected}
             >
               Nuevo Certificado
             </button>
@@ -238,125 +338,153 @@ export function ProductListPage() {
           // Vista móvil - Tarjetas
           renderMobileCards()
         ) : (
-          // Vista desktop - Tabla con scroll horizontal
+          // Vista desktop - Tabla
           <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
-            <div className="overflow-x-auto">
-              <table className="w-full min-w-[800px]">
-                <thead className="bg-gray-50">
-                  <tr className="border-b border-gray-200">
-                    <th className="text-left py-3 px-4 font-medium text-gray-900">
-                      Nombre
-                    </th>
-                    <th className="text-left py-3 px-4 font-medium text-gray-900">
-                      Emisor
-                    </th>
-                    <th className="text-left py-3 px-4 font-medium text-gray-900">
-                      Tipo
-                    </th>
-                    <th className="text-left py-3 px-4 font-medium text-gray-900">
-                      Fecha
-                    </th>
-                    <th className="text-left py-3 px-4 font-medium text-gray-900">
-                      Ubicación
-                    </th>
-                    <th className="text-center py-3 px-4 font-medium text-gray-900">
-                      Acciones
-                    </th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-gray-200">
-                  {products.map((product, id) => (
-                    <tr
-                      key={id}
-                      className={`${
-                        rowsSelected.includes(product.name)
-                          ? "bg-table-body-selected"
-                          : "bg-white"
-                      }`}
-                    >
-                      <td className="py-3 px-4 font-medium text-gray-900 transition-colors">
-                        {product.name}
-                      </td>
-                      <td className="py-3 px-4 text-gray-700">
-                        {product.source}
-                      </td>
-                      <td className="py-3 px-4 text-gray-700">
-                        {product.type}
-                      </td>
-                      <td className="py-3 px-4 text-gray-700">
-                        {product.date}
-                      </td>
-                      <td className="py-3 px-4 text-gray-700">
-                        {product.location}
-                      </td>
-                      <td className="py-3 px-4">
-                        <div className="flex justify-center gap-4">
-                          {/* Botón Ver */}
-                          <button
-                            onClick={() => handleViewCertificate(product)}
-                            className="p-2 rounded-md"
-                            title="Ver certificado"
-                          >
-                            <img
-                              src={eyeIcon}
-                              alt="Ver"
-                              className="cursor-pointer transition-transform duration-400 ease-in-out hover:scale-140"
-                            />
-                          </button>
-
-                          {/* Botón Descargar */}
-                          <button
-                            onClick={() => handleDownloadCertificate(product)}
-                            className="p-2 rounded-md"
-                            title="Descargar certificado"
-                            disabled={isExporting}
-                          >
-                            <img
-                              src={fileIcon}
-                              alt="Descargar Certificate"
-                              className="cursor-pointer transition-transform duration-400 ease-in-out hover:scale-140"
-                            />
-                          </button>
-
-                          {/* Botón Descargar QR */}
-                          <button
-                            onClick={() => handleDownloadCertificate(product)}
-                            className="p-2 rounded-md"
-                            title="Descargar QR"
-                            disabled={isExporting}
-                          >
-                            <img
-                              src={QRIcon}
-                              alt="Descargar QR"
-                              className="cursor-pointer transition-transform duration-400 ease-in-out hover:scale-140"
-                            />
-                          </button>
-                        </div>
-                      </td>
+            {loading ? (
+              <div className="flex justify-center items-center py-8">
+                <div className="text-gray-500">Cargando certificados...</div>
+              </div>
+            ) : error ? (
+              <div className="text-center py-8">
+                <div className="text-red-500 mb-4">{error}</div>
+                <button
+                  onClick={handleRefreshCertificates}
+                  className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+                >
+                  Reintentar
+                </button>
+              </div>
+            ) : products.length === 0 ? (
+              <div className="text-center py-8">
+                <div className="text-gray-500 mb-4">
+                  No tienes certificados aún
+                </div>
+                <button
+                  onClick={() => setIsFormModalOpen(true)}
+                  className="px-4 py-2 bg-black text-white rounded hover:bg-gray-800"
+                >
+                  Crear tu primer certificado
+                </button>
+              </div>
+            ) : (
+              <div className="overflow-x-auto">
+                <table className="w-full min-w-[800px]">
+                  <thead className="bg-gray-50">
+                    <tr className="border-b border-gray-200">
+                      <th className="text-left py-3 px-4 font-medium text-gray-900">
+                        Nombre
+                      </th>
+                      <th className="text-left py-3 px-4 font-medium text-gray-900">
+                        Emisor
+                      </th>
+                      <th className="text-left py-3 px-4 font-medium text-gray-900">
+                        Tipo
+                      </th>
+                      <th className="text-left py-3 px-4 font-medium text-gray-900">
+                        Fecha
+                      </th>
+                      <th className="text-left py-3 px-4 font-medium text-gray-900">
+                        Ubicación
+                      </th>
+                      <th className="text-center py-3 px-4 font-medium text-gray-900">
+                        Acciones
+                      </th>
                     </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
+                  </thead>
+                  <tbody className="divide-y divide-gray-200">
+                    {products.map((product, id) => (
+                      <tr
+                        key={product.id || id}
+                        className={`${
+                          rowsSelected.includes(product.name)
+                            ? "bg-table-body-selected"
+                            : "bg-white"
+                        }`}
+                      >
+                        <td className="py-3 px-4 font-medium text-gray-900 transition-colors">
+                          {product.name}
+                        </td>
+                        <td className="py-3 px-4 text-gray-700">
+                          {product.source}
+                        </td>
+                        <td className="py-3 px-4 text-gray-700">
+                          {product.type}
+                        </td>
+                        <td className="py-3 px-4 text-gray-700">
+                          {product.date}
+                        </td>
+                        <td className="py-3 px-4 text-gray-700">
+                          {product.location}
+                        </td>
+                        <td className="py-3 px-4">
+                          <div className="flex justify-center gap-4">
+                            <button
+                              onClick={() => handleViewCertificate(product)}
+                              className="p-2 rounded-md"
+                              title="Ver certificado"
+                            >
+                              <img
+                                src={eyeIcon}
+                                alt="Ver"
+                                className="cursor-pointer transition-transform duration-400 ease-in-out hover:scale-140"
+                              />
+                            </button>
+
+                            <button
+                              onClick={() => handleDownloadCertificate(product)}
+                              className="p-2 rounded-md"
+                              title="Descargar certificado"
+                              disabled={isExporting}
+                            >
+                              <img
+                                src={fileIcon}
+                                alt="Descargar Certificate"
+                                className="cursor-pointer transition-transform duration-400 ease-in-out hover:scale-140"
+                              />
+                            </button>
+
+                            <button
+                              onClick={() => handleDownloadCertificate(product)}
+                              className="p-2 rounded-md"
+                              title="Descargar QR"
+                              disabled={isExporting}
+                            >
+                              <img
+                                src={QRIcon}
+                                alt="Descargar QR"
+                                className="cursor-pointer transition-transform duration-400 ease-in-out hover:scale-140"
+                              />
+                            </button>
+                          </div>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            )}
           </div>
         )}
 
-        <footer className="flex flex-col sm:flex-row justify-between items-center gap-4 mt-8 bg-white p-4 rounded-lg shadow-sm border border-gray-200">
-          <span className="text-sm text-gray-600">Filas por página: 10</span>
+        {/* Footer de paginación*/}
+        {products.length > 0 && (
+          <footer className="flex flex-col sm:flex-row justify-between items-center gap-4 mt-8 bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+            <span className="text-sm text-gray-600">Filas por página: 10</span>
 
-          <div className="flex gap-2 items-center overflow-x-auto">
-            {renderPaginationButtons()}
-          </div>
+            <div className="flex gap-2 items-center overflow-x-auto">
+              {renderPaginationButtons()}
+            </div>
 
-          <span className="text-sm text-gray-600 whitespace-nowrap">
-            Pág {pagination.page} de {pagination.totalPages}
-          </span>
-        </footer>
+            <span className="text-sm text-gray-600 whitespace-nowrap">
+              Pág {pagination.page} de {pagination.totalPages}
+            </span>
+          </footer>
+        )}
       </section>
 
       <ModalFormCertificate
         isOpen={isFormModalOpen}
-        onClose={() => setIsFormModalOpen(false)}
+        onClose={handleFormModalClose}
       />
 
       <ModalCertificate
