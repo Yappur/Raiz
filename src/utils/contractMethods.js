@@ -56,7 +56,7 @@ export const getCertificationByAddress = async (provider, address) => {
 export const certificateProduct = async (signer, product) => {
   try {
     const contract = new ethers.Contract(contractAddress, contractABI, signer);
-    const certification = await contract.emitirCertificado(
+    const tx = await contract.emitirCertificado(
       product.name,
       product.productType,
       product.company,
@@ -66,10 +66,12 @@ export const certificateProduct = async (signer, product) => {
       product.creationDate
     );
 
-    console.log(certification);
+    await tx.wait();
 
+    console.log("Certificado emitido exitosamente:", tx);
     return true;
   } catch (error) {
-    console.log(error);
+    console.error("Error en certificateProduct:", error);
+    return false;
   }
 };

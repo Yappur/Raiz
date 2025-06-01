@@ -6,8 +6,12 @@ import useAppStore from "../store/useAppStore";
 import SelectLocation from "../common/SelectLocation";
 import ModalCreatedCertificate from "./Modals/ModalCreatedCertificate";
 
+import useWalletStore from "../store/useWalletStore";
+import { certificateProduct } from "../utils/contractMethods";
+
 const FormCertificate = () => {
   const { setToast } = useStore(useAppStore);
+  const { signer, isConnected, address } = useWalletStore();
 
   const [fecha, setFecha] = useState("");
   const [mostrarCalendar, setMostrarCalendar] = useState(false);
@@ -20,6 +24,7 @@ const FormCertificate = () => {
   const [descripcion, setDescripcion] = useState("");
 
   const [errores, setErrores] = useState({});
+  const [loading, setLoading] = useState(false);
 
   const [modalAbierto, setModalAbierto] = useState(false);
   const [certificadoCreado, setCertificadoCreado] = useState(null);
@@ -112,25 +117,45 @@ const FormCertificate = () => {
     return true;
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
+    if (!isConnected || !signer) {
+      setToast("Debes conectar tu wallet primero", "error");
+      return;
+    }
+
     if (validarFormulario()) {
-      const datosFormulario = {
-        nombre,
-        tipoProducto,
-        emisor,
-        descripcion,
-        fecha,
-        lugarProduccion,
-      };
+      setLoading(true);
 
-      console.log("Formulario enviado con éxito", datosFormulario);
+      try {
+        const datosFormulario = {
+          name: nombre,
+          productType: tipoProducto,
+          company: emisor,
+          description: descripcion,
+          location: lugarProduccion,
+          productionDate: fecha,
+          creationDate: new Date().toISOString().split("T")[0],
+        };
 
-      setCertificadoCreado(datosFormulario);
-      setModalAbierto(true);
+        console.log("Enviando al smart contract:", datosFormulario);
 
-      setToast("¡Certificado emitido con éxito!", "success");
+        const resultado = await certificateProduct(signer, datosFormulario);
+
+        if (resultado) {
+          setCertificadoCreado(datosFormulario);
+          setModalAbierto(true);
+          setToast("¡Certificado emitido en blockchain con éxito!", "success");
+        } else {
+          setToast("Error al emitir el certificado", "error");
+        }
+      } catch (error) {
+        console.error("Error al emitir certificado:", error);
+        setToast("Error al emitir el certificado en blockchain", "error");
+      } finally {
+        setLoading(false);
+      }
     }
   };
 
@@ -367,9 +392,10 @@ const FormCertificate = () => {
               </button>
               <button
                 type="submit"
-                className="px-6 py-2 bg-[#202715] hover:bg-[#14180e] text-white rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500 transition-colors"
+                disabled={loading || !isConnected}
+                className="px-6 py-2 bg-[#202715] hover:bg-[#14180e] disabled:bg-gray-400 disabled:cursor-not-allowed text-white rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500 transition-colors"
               >
-                Emitir Certificado
+                {loading ? "Emitiendo..." : "Emitir Certificado"}
               </button>
             </div>
           </form>
