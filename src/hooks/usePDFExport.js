@@ -38,18 +38,21 @@ const usePDFExport = () => {
             <div class="certificate-content">
               <h2>${certificate.name}</h2>
               <p><span class="label">Tipo de producto: </span>${
-                certificate.type
+                certificate.productType
               }</p>
-              <p><span class="label">Emisor: </span>${certificate.source}</p>
+              <p><span class="label">Emisor: </span>${certificate.company}</p>
               <p><span class="label">Fecha de Emisión: </span>${
-                certificate.date
+                certificate.creationDate
               }</p>
               <p><span class="label">Fecha de Producción: </span>${
-                certificate.date
+                certificate.productionDate
               }</p>
               <p><span class="label">Lugar de Producción: </span>${
                 certificate.location
               }</p>
+              <p><span class="label">Link: </span>${
+                certificate.link
+               }</p>
               <p class="description"><span class="label">Descripción: </span>${
                 certificate.description
               }</p>

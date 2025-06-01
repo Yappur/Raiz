@@ -14,6 +14,7 @@ export const getCertificationById = async (provider, id) => {
     const certification = await contract.certificadosPorID(id);
 
     const details = {
+      id: id,
       name: certification.name,
       productType: certification.productType,
       company: certification.company,
@@ -21,6 +22,7 @@ export const getCertificationById = async (provider, id) => {
       location: certification.location,
       productionDate: certification.productionDate,
       creationDate: certification.creationDate,
+      link: `${import.meta.env.VITE_WEBSITE_URL}/certificates/${id}`,
     };
 
     return details;

@@ -23,7 +23,7 @@ export const Sidebar = () => {
       </div>
 
       <div className="flex flex-row gap-6 md:flex-col md:gap-8">
-        <NavLink to="/Producers">
+        <NavLink to="/producers/new-certificate">
           {({ isActive }) => (
             <HomeIcon
               className="hover:stroke-icon-hover transition-colors w-6 h-6 md:w-auto md:h-auto"
@@ -32,7 +32,7 @@ export const Sidebar = () => {
           )}
         </NavLink>
 
-        <NavLink to={"/products"}>
+        <NavLink to={"/producers/my-certificates"}>
           {({ isActive }) => (
             <FolderIcon
               className="hover:stroke-icon-hover transition-colors w-6 h-6 md:w-auto md:h-auto"

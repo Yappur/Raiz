@@ -3,6 +3,7 @@ import Home from "../pages/homePage";
 import ViewProducers from "../pages/ViewProducers";
 import ProductListPage from "../pages/ProductListPage";
 import LayoutCompleteProducers from "../components/Navigate/LayoutCompleteProducers";
+import ViewCertificate from "../pages/ViewCertificate";
 
 const RoutesViews = () => {
   return (
@@ -10,10 +11,12 @@ const RoutesViews = () => {
       <Routes>
         <Route path="/" element={<Home />} />
 
-        <Route element={<LayoutCompleteProducers />}>
-          <Route path="/products" element={<ProductListPage />} />
-          <Route path="/producers" element={<ViewProducers />} />
+        <Route element={<LayoutCompleteProducers />} path="/producers">
+          <Route path="new-certificate" element={<ViewProducers />} />
+          <Route path="my-certificates" element={<ProductListPage />} />
         </Route>
+
+        <Route path="/certificates/:id" element={<ViewCertificate />} />
       </Routes>
     </>
   );

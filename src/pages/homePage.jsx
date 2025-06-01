@@ -1,39 +1,31 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { useNavigate } from "react-router-dom";
 import { useStore } from "zustand";
 import useWalletStore from "../store/useWalletStore";
-import useAppStore from "../store/useAppStore.js";
-import QRScannerModal from "../components/Modals/QRScannerModal.jsx";
 import LandingNavbar from "../components/Navigate/LandingNavbar.jsx";
 import noise from "../assets/background/noise.png";
 import raizBg from "../assets/background/raiz-bg.svg";
 import bgBase64 from "../assets/background/bgImage.js";
-import arrowLeft from "../assets/icons/arrowLeft.svg";
 import reverse from "../assets/icons/reverse.svg";
 import success from "../assets/icons/success.svg";
+import arrowLeft from "../assets/icons/arrowLeft.svg";
 
 import {
   containerVariants,
   titleVariants,
-  rightSectionVariants,
   cardVariants,
   backgroundImageVariants,
   titleTextVariants,
-  arrowAnimation,
   hoverAnimations,
+  rightSectionVariants,
+  arrowAnimation,
   transitionConfigs,
 } from "../utils/homeAnimations.js";
 
 export default function Home() {
-  const { isConnected, connectWallet, disconnectWallet, shortAddress } =
-    useStore(useWalletStore);
-  const { setLoading, setToast } = useStore(useAppStore);
-  const [showError, setShowError] = useState(true);
-  const [showQRScanner, setShowQRScanner] = useState(false);
-  const [scanSuccess, setScanSuccess] = useState(false);
+  const { isConnected, shortAddress } = useStore(useWalletStore);
   const [hasAnimated, setHasAnimated] = useState(false);
-  const navigate = useNavigate();
+  const [showQRScanner, setShowQRScanner] = useState(false);
 
   useEffect(() => {
     if (!hasAnimated) {
@@ -44,45 +36,6 @@ export default function Home() {
       return () => clearTimeout(timer);
     }
   }, [hasAnimated]);
-
-  const handleWalletClick = async () => {
-    setLoading(true);
-    if (isConnected) {
-      await disconnectWallet();
-    } else {
-      try {
-        await connectWallet();
-        navigate("/producers");
-        setToast("¡Wallet conectada exitosamente!", "success");
-      } catch (error) {
-        if (error.message.includes("No se detectó ninguna wallet")) {
-          setToast(error.message, "error");
-        } else {
-          setToast("Ha ocurrido un error al conectarse a la Wallet", "error");
-        }
-      }
-    }
-    setLoading(false);
-  };
-
-  const handleQRScan = (data) => {
-    console.log("Código QR escaneado:", data);
-    setScanSuccess(true);
-    processQRData(data);
-  };
-
-  const processQRData = (qrData) => {
-    try {
-      if (qrData.startsWith("http://") || qrData.startsWith("https://")) {
-        window.location.href = qrData;
-        return;
-      }
-    } catch (error) {
-      console.error("Error procesando QR:", error);
-      setScanSuccess(true);
-      setTimeout(() => setScanSuccess(false), 5000);
-    }
-  };
 
   const WalletStatus = () => (
     <AnimatePresence mode="wait">
@@ -246,10 +199,8 @@ export default function Home() {
 
         <motion.div {...(hasAnimated ? {} : transitionConfigs.navbar)}>
           <LandingNavbar
-            showError={showError}
-            onWalletClick={handleWalletClick}
-            onQRScannerOpen={() => setShowQRScanner(true)}
-            onCloseError={() => setShowError(false)}
+            showQRScanner={showQRScanner}
+            setShowQRScanner={setShowQRScanner}
           />
         </motion.div>
 
@@ -263,23 +214,12 @@ export default function Home() {
             animate={hasAnimated ? false : "visible"}
           >
             <MainTitle />
-            <ScanSection />
+          <ScanSection />
           </motion.div>
 
           <InfoCards />
         </main>
       </motion.div>
-
-      <AnimatePresence mode="wait">
-        {showQRScanner && (
-          <QRScannerModal
-            key="qr-modal"
-            isOpen={showQRScanner}
-            onClose={() => setShowQRScanner(false)}
-            onScan={handleQRScan}
-          />
-        )}
-      </AnimatePresence>
     </>
   );
 }

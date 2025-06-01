@@ -27,7 +27,6 @@ export function ProductListPage() {
     totalPages: 1,
     total: 0,
   });
-  const [rowsSelected, setRowsSelected] = useState([]);
   const [isFormModalOpen, setIsFormModalOpen] = useState(false);
   const [isCertificateModalOpen, setIsCertificateModalOpen] = useState(false);
   const [certificateOpened, setCertificateOpened] = useState();
@@ -57,16 +56,16 @@ export function ProductListPage() {
       const certificates = await getCertificationByAddress(provider, address);
 
       if (certificates && certificates.length > 0) {
-        const mappedCertificates = certificates.map((cert, index) => ({
-          id: index + 1,
+        const mappedCertificates = certificates.map((cert) => ({
+          id: cert.id,
           name: cert.name,
-          source: cert.company,
-          type: cert.productType,
-          date: cert.productionDate,
+          company: cert.company,
+          productType: cert.productType,
+          productionDate: cert.productionDate,
           location: cert.location,
           description: cert.description,
           creationDate: cert.creationDate,
-          certificationLink: `https://raiz.veri.link/certificado-${index + 1}`,
+          link: cert.link,
         }));
 
         setAllCertificates(mappedCertificates);
@@ -219,9 +218,9 @@ export function ProductListPage() {
 
     return (
       <div className="space-y-4">
-        {products.map((product, id) => (
+        {products.map((product) => (
           <div
-            key={product.id || id}
+            key={product.id}
             className="bg-white border border-gray-200 rounded-lg p-4 shadow-sm hover:shadow-md transition-shadow"
           >
             <div className="flex items-start justify-between mb-3">
@@ -233,15 +232,15 @@ export function ProductListPage() {
             <div className="grid grid-cols-1 gap-2 text-sm">
               <div className="flex justify-between">
                 <span className="text-gray-500">Emisor:</span>
-                <span className="font-medium">{product.source}</span>
+                <span className="font-medium">{product.company}</span>
               </div>
               <div className="flex justify-between">
                 <span className="text-gray-500">Tipo:</span>
-                <span className="font-medium">{product.type}</span>
+                <span className="font-medium">{product.productType}</span>
               </div>
               <div className="flex justify-between">
                 <span className="text-gray-500">Fecha:</span>
-                <span className="font-medium">{product.date}</span>
+                <span className="font-medium">{product.productionDate}</span>
               </div>
               <div className="flex justify-between">
                 <span className="text-gray-500">Ubicación:</span>
@@ -393,25 +392,18 @@ export function ProductListPage() {
                   </thead>
                   <tbody className="divide-y divide-gray-200">
                     {products.map((product, id) => (
-                      <tr
-                        key={product.id || id}
-                        className={`${
-                          rowsSelected.includes(product.name)
-                            ? "bg-table-body-selected"
-                            : "bg-white"
-                        }`}
-                      >
+                      <tr key={product.id || id}>
                         <td className="py-3 px-4 font-medium text-gray-900 transition-colors">
                           {product.name}
                         </td>
                         <td className="py-3 px-4 text-gray-700">
-                          {product.source}
+                          {product.company}
                         </td>
                         <td className="py-3 px-4 text-gray-700">
-                          {product.type}
+                          {product.productType}
                         </td>
                         <td className="py-3 px-4 text-gray-700">
-                          {product.date}
+                          {product.productionDate}
                         </td>
                         <td className="py-3 px-4 text-gray-700">
                           {product.location}

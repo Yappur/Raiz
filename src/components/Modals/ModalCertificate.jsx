@@ -25,15 +25,15 @@ const ModalCertificate = ({ isOpen, onClose, certificate }) => {
             <h2 className="font-semibold text-2xl mb-1">{certificate.name}</h2>
             <p className="font-light">
               <span className="font-medium">Tipo de producto: </span>
-              {certificate.type}
+              {certificate.productType}
             </p>
             <p className="font-light">
               <span className="font-medium">Emisor: </span>
-              {certificate.source}
+              {certificate.company}
             </p>
             <p className="font-light">
               <span className="font-medium">Fecha de Emision: </span>
-              {certificate.date}
+              {certificate.creationDate}
             </p>
             <p className="font-light">
               <span className="font-medium">Fecha de Producción: </span>
@@ -42,6 +42,12 @@ const ModalCertificate = ({ isOpen, onClose, certificate }) => {
             <p className="font-light">
               <span className="font-medium">Lugar de Producción: </span>
               {certificate.location}
+            </p>
+            <p className="font-light">
+              <span className="font-medium">Link: </span>
+              <a href={certificate.link} className="text-black">
+                {certificate.link}
+              </a>
             </p>
             <p className="font-light text-justify">
               <span className="font-medium">Descripción: </span>
