@@ -48,33 +48,64 @@ const FormCertificate = () => {
 
   const validarFormulario = () => {
     const nuevosErrores = {};
+    let primerError = null;
 
     if (!nombre.trim()) {
       nuevosErrores.nombre = "Este campo es obligatorio";
+      if (!primerError) primerError = "El nombre del producto es obligatorio";
+    } else if (nombre.trim().length > 64) {
+      nuevosErrores.nombre = "Máximo 64 caracteres";
+      if (!primerError)
+        primerError =
+          "El nombre del producto no puede exceder los 64 caracteres";
     }
 
     if (!tipoProducto) {
       nuevosErrores.tipoProducto = "Este campo es obligatorio";
+      if (!primerError) primerError = "Debes seleccionar un tipo de producto";
     }
 
     if (!emisor.trim()) {
       nuevosErrores.emisor = "Este campo es obligatorio";
+      if (!primerError) primerError = "El emisor es obligatorio";
+    } else if (emisor.trim().length > 100) {
+      nuevosErrores.emisor = "Máximo 100 caracteres";
+      if (!primerError)
+        primerError = "El emisor no puede exceder los 100 caracteres";
     }
 
+    // Validación descripción
     if (!descripcion.trim()) {
       nuevosErrores.descripcion = "Este campo es obligatorio";
+      if (!primerError) primerError = "La descripción es obligatoria";
+    } else if (descripcion.trim().length < 50) {
+      nuevosErrores.descripcion = "Mínimo 50 caracteres";
+      if (!primerError)
+        primerError = "La descripción debe tener al menos 50 caracteres";
+    } else if (descripcion.trim().length > 300) {
+      nuevosErrores.descripcion = "Máximo 300 caracteres";
+      if (!primerError)
+        primerError = "La descripción no puede exceder los 300 caracteres";
     }
 
     if (!fecha) {
       nuevosErrores.fecha = "Este campo es obligatorio";
+      if (!primerError) primerError = "La fecha de producción es obligatoria";
     }
 
     if (!lugarProduccion.trim()) {
       nuevosErrores.lugarProduccion = "Este campo es obligatorio";
+      if (!primerError) primerError = "El lugar de producción es obligatorio";
     }
 
     setErrores(nuevosErrores);
-    return Object.keys(nuevosErrores).length === 0;
+
+    if (Object.keys(nuevosErrores).length > 0 && primerError) {
+      setToast(primerError, "error");
+      return false;
+    }
+
+    return true;
   };
 
   const handleSubmit = (e) => {
@@ -91,8 +122,6 @@ const FormCertificate = () => {
       };
       console.log("Formulario enviado con éxito", datosFormulario);
       setToast("¡Certificado emitido con éxito!", "success");
-    } else {
-      setToast("Por favor, completa todos los campos requeridos.", "error");
     }
   };
 
@@ -118,7 +147,7 @@ const FormCertificate = () => {
                 htmlFor="nombre"
                 className="block text-sm font-medium mb-1"
               >
-                Nombre del producto
+                Nombre del producto*{" "}
               </label>
               <input
                 id="nombre"
@@ -129,15 +158,23 @@ const FormCertificate = () => {
                   errores.nombre ? "border-red-500" : "border-gray-300"
                 }`}
                 placeholder="Ingrese el nombre del producto"
+                maxLength="64"
               />
-              {errores.nombre && (
-                <p className="text-red-500 text-sm mt-1">{errores.nombre}</p>
-              )}
+              <div className="flex justify-between items-center mt-1">
+                {errores.nombre ? (
+                  <p className="text-red-500 text-sm">{errores.nombre}</p>
+                ) : (
+                  <div></div>
+                )}
+                <span className="text-xs text-gray-400">
+                  {nombre.length}/64
+                </span>
+              </div>
             </div>
 
             <div className="relative">
               <label htmlFor="tipo" className="block text-sm font-medium mb-1">
-                Tipo de producto
+                Tipo de producto*
               </label>
               <button
                 type="button"
@@ -182,7 +219,7 @@ const FormCertificate = () => {
 
           <div>
             <label htmlFor="emisor" className="block text-sm font-medium mb-1">
-              Emisor
+              Emisor*{" "}
             </label>
             <input
               id="emisor"
@@ -193,10 +230,16 @@ const FormCertificate = () => {
                 errores.emisor ? "border-red-500" : "border-gray-300"
               }`}
               placeholder="Ej. Fundación EcoRaíz"
+              maxLength="100"
             />
-            {errores.emisor && (
-              <p className="text-red-500 text-sm mt-1">{errores.emisor}</p>
-            )}
+            <div className="flex justify-between items-center mt-1">
+              {errores.emisor ? (
+                <p className="text-red-500 text-sm">{errores.emisor}</p>
+              ) : (
+                <div></div>
+              )}
+              <span className="text-xs text-gray-400">{emisor.length}/100</span>
+            </div>
           </div>
 
           <div>
@@ -204,7 +247,10 @@ const FormCertificate = () => {
               htmlFor="descripcion"
               className="block text-sm font-medium mb-1"
             >
-              Descripción
+              Descripción*{" "}
+              <span className="text-xs text-gray-500">
+                (mín. 50, máx. 300 caracteres)
+              </span>
             </label>
             <textarea
               id="descripcion"
@@ -215,16 +261,31 @@ const FormCertificate = () => {
                 errores.descripcion ? "border-red-500" : "border-gray-300"
               }`}
               placeholder="Describe el producto, su origen o proceso."
+              maxLength="300"
             />
-            {errores.descripcion && (
-              <p className="text-red-500 text-sm mt-1">{errores.descripcion}</p>
-            )}
+            <div className="flex justify-between items-center mt-1">
+              {errores.descripcion ? (
+                <p className="text-red-500 text-sm">{errores.descripcion}</p>
+              ) : (
+                <div></div>
+              )}
+              <span
+                className={`text-xs ${
+                  descripcion.length < 50 ? "text-orange-500" : "text-gray-400"
+                }`}
+              >
+                {descripcion.length}/300{" "}
+                {descripcion.length < 50 &&
+                  descripcion.length > 0 &&
+                  `(faltan ${50 - descripcion.length})`}
+              </span>
+            </div>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="relative">
               <label className="block text-sm font-medium mb-1">
-                Fecha de producción
+                Fecha de producción*
               </label>
               <button
                 type="button"
@@ -258,7 +319,7 @@ const FormCertificate = () => {
 
             <div>
               <label className="block text-sm font-medium mb-1">
-                Lugar de producción
+                Lugar de producción*
               </label>
               <SelectLocation
                 value={lugarProduccion}
