@@ -4,10 +4,14 @@ import { useStore } from "zustand";
 import useWalletStore from "../store/useWalletStore";
 import ModalCertificate from "../components/Modals/ModalCertificate";
 import usePDFExport from "../hooks/usePDFExport";
+import { getCertificationByAddress } from "../utils/contractMethods";
 
+//icons
 import eyeIcon from "../assets/icons/eye-icon.svg";
 import fileIcon from "../assets/icons/file-icon.svg";
 import QRIcon from "../assets/icons/QR-icon.svg";
+import paginationLeft from "../assets/icons/pagination-left.svg";
+import paginationRight from "../assets/icons/pagination-right.svg";
 
 const exampleProducts = [
   {
@@ -20,40 +24,11 @@ const exampleProducts = [
     description:
       "Camisa confeccionada íntegramente con algodón orgánico certificado, proveniente de cultivos sostenibles que no utilizan pesticidas, fertilizantes sintéticos ni semillas genéticamente modificadas. El proceso de producción respeta tanto los ciclos naturales del suelo como a las personas involucradas en la cadena de valor. Cada prenda está hecha bajo condiciones laborales justas, promoviendo una economía circular y de comercio ético.",
   },
-  {
-    name: "Camisa Origen 2",
-    source: "Hilando al Sur",
-    type: "Textil",
-    date: "06-07-2027",
-    location: "Córdoba, Argentina",
-    certificationLink: "https://raiz.veri.link/tu-certificado",
-    description:
-      "Camisa confeccionada íntegramente con algodón orgánico certificado, proveniente de cultivos sostenibles que no utilizan pesticidas, fertilizantes sintéticos ni semillas genéticamente modificadas. El proceso de producción respeta tanto los ciclos naturales del suelo como a las personas involucradas en la cadena de valor. Cada prenda está hecha bajo condiciones laborales justas, promoviendo una economía circular y de comercio ético.",
-  },
-  {
-    name: "Camisa Origen 3",
-    source: "Hilando al Sur",
-    type: "Textil",
-    date: "06-07-2027",
-    location: "Córdoba, Argentina",
-    certificationLink: "https://raiz.veri.link/tu-certificado",
-    description:
-      "Camisa confeccionada íntegramente con algodón orgánico certificado, proveniente de cultivos sostenibles que no utilizan pesticidas, fertilizantes sintéticos ni semillas genéticamente modificadas. El proceso de producción respeta tanto los ciclos naturales del suelo como a las personas involucradas en la cadena de valor. Cada prenda está hecha bajo condiciones laborales justas, promoviendo una economía circular y de comercio ético.",
-  },
-  {
-    name: "Camisa Origen 4",
-    source: "Hilando al Sur",
-    type: "Textil",
-    date: "06-07-2027",
-    location: "Córdoba, Argentina",
-    certificationLink: "https://raiz.veri.link/tu-certificado",
-    description:
-      "Camisa confeccionada íntegramente con algodón orgánico certificado, proveniente de cultivos sostenibles que no utilizan pesticidas, fertilizantes sintéticos ni semillas genéticamente modificadas. El proceso de producción respeta tanto los ciclos naturales del suelo como a las personas involucradas en la cadena de valor. Cada prenda está hecha bajo condiciones laborales justas, promoviendo una economía circular y de comercio ético.",
-  },
 ];
 
 export function ProductListPage() {
-  const { getDisplayName } = useStore(useWalletStore);
+  const { getDisplayName, signer, isConnected, address } =
+    useStore(useWalletStore);
   const { exportToPDF, isExporting } = usePDFExport();
 
   const [products, setProducts] = useState([]);
@@ -123,18 +98,7 @@ export function ProductListPage() {
         disabled={pagination.page === 1}
         className="cursor-pointer hover:text-slate-600 disabled:opacity-50 disabled:cursor-not-allowed p-1"
       >
-        <svg
-          width="9"
-          height="15"
-          viewBox="0 0 9 15"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            d="M8.5 14.5C8.5 13.759 7.767 12.65 7.025 11.72C6.071 10.52 4.931 9.473 3.624 8.674C2.644 8.075 1.456 7.5 0.5 7.5C1.456 7.5 2.645 6.925 3.624 6.326C4.931 5.526 6.071 4.479 7.025 3.281C7.767 2.35 8.5 1.24 8.5 0.5"
-            stroke="currentColor"
-          />
-        </svg>
+        <img src={paginationLeft} alt="Ir izquierda" />
       </button>
     );
 
@@ -159,18 +123,7 @@ export function ProductListPage() {
         disabled={pagination.page === pagination.totalPages}
         className="cursor-pointer hover:text-slate-600 disabled:opacity-50 disabled:cursor-not-allowed p-1"
       >
-        <svg
-          width="9"
-          height="15"
-          viewBox="0 0 9 15"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            d="M0.5 14.5C0.5 13.759 1.233 12.65 1.975 11.72C2.929 10.52 4.069 9.473 5.376 8.674C6.356 8.075 7.544 7.5 8.5 7.5C7.544 7.5 6.355 6.925 5.376 6.326C4.069 5.526 2.929 4.479 1.975 3.281C1.233 2.35 0.5 1.24 0.5 0.5"
-            stroke="currentColor"
-          />
-        </svg>
+        <img src={paginationRight} alt="Ir Derecha" />
       </button>
     );
 

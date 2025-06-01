@@ -40,7 +40,7 @@ export const getCertificationByAddress = async (provider, address) => {
 
     const idList = certificationIdList.map((id) => Number(id));
 
-    if (idList.length > 1) {
+    if (idList.length >= 1) {
       const certificados = await Promise.all(
         idList.map((id) => getCertificationById(provider, id))
       );
