@@ -1,8 +1,7 @@
 import { useState, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import LandingNavbar from "../components/Navigate/LandingNavbar.jsx";
 import noise from "../assets/background/noise.png";
-import raizBg from "../assets/background/raiz-bg.svg";
 import bgBase64 from "../assets/background/bgImage.js";
 import reverse from "../assets/icons/reverse.svg";
 import success from "../assets/icons/success.svg";
@@ -17,7 +16,6 @@ import {
   containerVariants,
   titleVariants,
   cardVariants,
-  backgroundImageVariants,
   titleTextVariants,
   hoverAnimations,
   rightSectionVariants,

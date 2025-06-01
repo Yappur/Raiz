@@ -3,8 +3,8 @@ import Button from "../common/Button";
 import QRCode from "react-qr-code";
 
 const ModalCertificate = ({ isOpen, onClose, certificate }) => {
-  if (!isOpen) return null;
   const { exportToPDF, isExporting } = usePDFExport();
+  if (!isOpen) return null;
 
   const handleDownloadCertificate = async (product) => {
     await exportToPDF([product]);
@@ -26,7 +26,11 @@ const ModalCertificate = ({ isOpen, onClose, certificate }) => {
         <article className="bg-white rounded-lg shadow-xl max-w-[540px] pb-8 px-8 w-full overflow-y-auto relative">
           <section className="absolute flex items-center justify-end right-10">
             <div className="bg-black pt-16 pb-4 px-4 flex items-end">
-              <QRCode value={certificate.link} size={100} style={{border: "4px solid white"}} />
+              <QRCode
+                value={certificate.link}
+                size={100}
+                style={{ border: "4px solid white" }}
+              />
             </div>
           </section>
           <section className="flex flex-col gap-y-4 mt-24">
