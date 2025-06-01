@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import usePDFExport from "../../hooks/usePDFExport";
 
 const ModalCreatedCertificate = ({ isOpen, onClose, certificate }) => {
@@ -19,17 +19,15 @@ const ModalCreatedCertificate = ({ isOpen, onClose, certificate }) => {
     }
   };
 
-  const certificateUrl = "https://raiz.app/certificate/1";
-
   const handleCopyUrl = async () => {
     try {
-      await navigator.clipboard.writeText(certificateUrl);
+      await navigator.clipboard.writeText(certificate.link);
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
     } catch (err) {
       console.error("Error al copiar:", err);
       const textArea = document.createElement("textarea");
-      textArea.value = certificateUrl;
+      textArea.value = certificate.link;
       document.body.appendChild(textArea);
       textArea.select();
       document.execCommand("copy");
@@ -60,7 +58,7 @@ const ModalCreatedCertificate = ({ isOpen, onClose, certificate }) => {
             <div className="flex gap-2">
               <input
                 type="text"
-                value={certificateUrl}
+                value={certificate.link}
                 disabled
                 className="flex-1 px-3 py-2 border border-gray-300 bg-gray-50 text-gray-500 text-sm"
               />

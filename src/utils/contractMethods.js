@@ -68,10 +68,30 @@ export const certificateProduct = async (signer, product) => {
       product.creationDate
     );
 
-    await tx.wait();
+    const receipt = await tx.wait();
 
-    console.log("Certificado emitido exitosamente:", tx);
-    return true;
+    // Buscar el evento "CertificadoEmitido"
+
+    let certificadoId = null;
+
+    for (const log of receipt.logs) {
+      try {
+        const parsedLog = contract.interface.parseLog(log);
+        if (parsedLog.name === "CertificadoEmitido") {
+          certificadoId = parsedLog.args.certificadoId.toString();
+          break;
+        }
+      } catch (e) {
+        console.log(e);
+      }
+    }
+
+    if (!certificadoId) {
+      console.warn("Evento CertificadoEmitido no encontrado.");
+      return false;
+    }
+
+    return certificadoId;
   } catch (error) {
     console.error("Error en certificateProduct:", error);
     return false;

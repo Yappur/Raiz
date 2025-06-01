@@ -139,12 +139,19 @@ const FormCertificate = () => {
           creationDate: new Date().toISOString().split("T")[0],
         };
 
-        console.log("Enviando al smart contract:", datosFormulario);
+        const certificationId = await certificateProduct(
+          signer,
+          datosFormulario
+        );
 
-        const resultado = await certificateProduct(signer, datosFormulario);
-
-        if (resultado) {
-          setCertificadoCreado(datosFormulario);
+        if (certificationId) {
+          setCertificadoCreado({
+            ...datosFormulario,
+            id: certificationId,
+            link: `${
+              import.meta.env.VITE_WEBSITE_URL
+            }/certificates/${certificationId}`,
+          });
           setModalAbierto(true);
           setToast("¡Certificado emitido en blockchain con éxito!", "success");
         } else {
