@@ -9,6 +9,7 @@ import bgBase64 from "../assets/background/bgImage.js";
 import reverse from "../assets/icons/reverse.svg";
 import success from "../assets/icons/success.svg";
 import arrowLeft from "../assets/icons/arrowLeft.svg";
+import BrotoBot from "../components/BrotoBot.jsx";
 
 import {
   containerVariants,
@@ -232,6 +233,7 @@ export default function Home() {
           </motion.div>
 
           <InfoCards />
+          <BrotoBot />
         </main>
 
         {/*  Main de móvil */}
