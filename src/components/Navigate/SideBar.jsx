@@ -8,7 +8,7 @@ import ExitIcon from "../../assets/icons/SideBar/exit-icon.svg?react";
 import { useStore } from "zustand";
 import useWalletStore from "../../store/useWalletStore";
 
-import bgHomeProducers64 from "../../assets/background/bgHomeImage";
+import sidebarBg64 from "../../assets/background/sideBarBg";
 
 export const Sidebar = () => {
   const { disconnectWallet } = useStore(useWalletStore);
@@ -23,7 +23,7 @@ export const Sidebar = () => {
   return (
     <aside
       style={{
-        backgroundImage: `url(${bgHomeProducers64})`,
+        backgroundImage: `url(${sidebarBg64})`,
         backgroundSize: "cover",
         backgroundPosition: "center",
       }}
