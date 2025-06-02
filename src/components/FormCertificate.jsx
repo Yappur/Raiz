@@ -203,7 +203,7 @@ const FormCertificate = () => {
                   type="text"
                   value={nombre}
                   onChange={(e) => setNombre(e.target.value)}
-                  className={`w-full px-3 py-2 border rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-orange-400 ${
+                  className={`w-full px-3 py-2 border shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-orange-400 ${
                     errores.nombre ? "border-red-500" : "border-gray-300"
                   }`}
                   placeholder="Ingrese el nombre del producto"
@@ -230,7 +230,7 @@ const FormCertificate = () => {
                 </label>
                 <button
                   type="button"
-                  className={`w-full px-3 py-2 border rounded-md shadow-sm text-left focus:outline-none focus:ring-2 focus:ring-orange-400 flex justify-between items-center ${
+                  className={`w-full px-3 py-2 border shadow-sm text-left focus:outline-none focus:ring-2 focus:ring-orange-400 flex justify-between items-center ${
                     errores.tipoProducto ? "border-red-500" : "border-gray-300"
                   }`}
                   onClick={() => setMostrarTipoSelect(!mostrarTipoSelect)}
@@ -246,12 +246,12 @@ const FormCertificate = () => {
                   <img src={arrowDown} alt="arrowDown" className="h-5 w-5" />
                 </button>
                 {mostrarTipoSelect && (
-                  <div className="absolute z-10 w-full mt-1 bg-white border border-gray-300 rounded-md shadow-lg max-h-40 overflow-y-auto">
+                  <div className="absolute z-10 w-full mt-1 bg-white border border-gray-300 shadow-lg max-h-40 overflow-y-auto">
                     {tiposProducto.map((tipo) => (
                       <button
                         key={tipo.value}
                         type="button"
-                        className="w-full px-3 py-2 text-left hover:bg-gray-100 focus:bg-gray-100 focus:outline-none first:rounded-t-md last:rounded-b-md"
+                        className="w-full px-3 py-2 text-left hover:bg-gray-100 focus:bg-gray-100 focus:outline-none"
                         onClick={() => {
                           setTipoProducto(tipo.value);
                           setMostrarTipoSelect(false);
@@ -282,7 +282,7 @@ const FormCertificate = () => {
                 type="text"
                 value={emisor}
                 onChange={(e) => setEmisor(e.target.value)}
-                className={`w-full px-3 py-2 border rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-orange-400 ${
+                className={`w-full px-3 py-2 border shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-orange-400 ${
                   errores.emisor ? "border-red-500" : "border-gray-300"
                 }`}
                 placeholder="Ej. Fundación EcoRaíz"
@@ -315,7 +315,7 @@ const FormCertificate = () => {
                 rows={3}
                 value={descripcion}
                 onChange={(e) => setDescripcion(e.target.value)}
-                className={`w-full px-3 py-2 border rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-orange-400 resize-vertical ${
+                className={`w-full px-3 py-2 border shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-orange-400 resize-vertical ${
                   errores.descripcion ? "border-red-500" : "border-gray-300"
                 }`}
                 placeholder="Describe el producto, su origen o proceso."
@@ -349,7 +349,7 @@ const FormCertificate = () => {
                 </label>
                 <button
                   type="button"
-                  className={`w-full px-3 py-2 border rounded-md shadow-sm text-left focus:outline-none focus:ring-2 focus:ring-orange-400 flex justify-between items-center ${
+                  className={`w-full px-3 py-2 border shadow-sm text-left focus:outline-none focus:ring-2 focus:ring-orange-400 flex justify-between items-center ${
                     errores.fecha ? "border-red-500" : "border-gray-300"
                   }`}
                   onClick={() => setMostrarCalendar(!mostrarCalendar)}
@@ -360,10 +360,10 @@ const FormCertificate = () => {
                   <img src={calendar} alt="calendar" className="h-5 w-5" />
                 </button>
                 {mostrarCalendar && (
-                  <div className="absolute z-10 mt-1 p-3 bg-white border border-gray-300 rounded-md shadow-lg">
+                  <div className="absolute z-10 mt-1 p-3 bg-white border border-gray-300 shadow-lg">
                     <input
                       type="date"
-                      className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-orange-400"
+                      className="w-full px-3 py-2 border border-gray-300 shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-orange-400"
                       value={fecha}
                       onChange={(e) => {
                         setFecha(e.target.value);

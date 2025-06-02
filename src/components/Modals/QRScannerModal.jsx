@@ -201,7 +201,7 @@ const QRScannerModal = ({ isOpen, onClose, onScan }) => {
 
         {/* Cartel centrado */}
         <div className="absolute top-16 left-0 right-0 z-10 flex justify-center">
-          <div className="bg-black/60 text-white px-6 py-3 rounded-lg">
+          <div className="bg-black/60 text-white px-6 py-3">
             <h1 className="text-lg font-medium text-center">
               Escanea para ver la raíz
             </h1>
@@ -253,7 +253,7 @@ const QRScannerModal = ({ isOpen, onClose, onScan }) => {
                     setError(null);
                     startScanner();
                   }}
-                  className="px-6 py-3 bg-blue-500 text-white rounded-lg text-lg font-medium"
+                  className="px-6 py-3 bg-blue-500 text-white text-lg font-medium cursor-pointer"
                 >
                   Reintentar
                 </button>
@@ -306,7 +306,7 @@ const QRScannerModal = ({ isOpen, onClose, onScan }) => {
     <>
       <div className="fixed inset-0 z-40 bg-black/50"></div>
       <div className="fixed inset-0 z-50 flex items-center justify-center">
-        <div className="bg-white rounded-lg p-6 max-w-md w-full mx-4 relative">
+        <div className="bg-white p-6 max-w-md w-full mx-4 relative">
           <div className="text-center mb-4">
             <h2 className="text-2xl font-bold text-gray-800 mb-2">
               Escanear Producto
@@ -317,7 +317,7 @@ const QRScannerModal = ({ isOpen, onClose, onScan }) => {
           </div>
 
           {/* Contenedor del escáner */}
-          <div className="relative bg-gray-100 rounded-lg overflow-hidden mb-4">
+          <div className="relative bg-gray-100 overflow-hidden mb-4">
             <video
               ref={videoRef}
               style={{
@@ -374,12 +374,12 @@ const QRScannerModal = ({ isOpen, onClose, onScan }) => {
             <button
               onClick={toggleScanning}
               disabled={!!error}
-              className={`px-14 py-2 font-medium transition-colors ${
+              className={`px-14 py-2 font-medium transition-colors cursor-pointer ${
                 error
                   ? "bg-gray-300 text-gray-500 cursor-not-allowed"
                   : isScanning
-                  ? "bg-black text-white border border-black hover:bg-transparent hover:text-black"
-                  : "bg-black text-white border border-black hover:bg-transparent hover:text-black"
+                  ? "bg-black text-white border border-black hover:bg-button-primary-hover"
+                  : "bg-black text-white border border-black hover:bg-button-primary-hover"
               }`}
             >
               {isScanning ? "Detener" : "Comenzar"}
@@ -391,7 +391,7 @@ const QRScannerModal = ({ isOpen, onClose, onScan }) => {
                   setError(null);
                   startScanner();
                 }}
-                className="px-14 py-2 bg-blue-500 text-white hover:bg-blue-600 transition-colors"
+                className="px-14 py-2 bg-blue-500 text-white hover:bg-blue-600 transition-colors cursor-pointer"
               >
                 Reintentar
               </button>
@@ -399,7 +399,7 @@ const QRScannerModal = ({ isOpen, onClose, onScan }) => {
 
             <button
               onClick={handleClose}
-              className="px-14 py-2 border border-black text-gray-700 hover:bg-gray-50 transition-colors"
+              className="px-14 py-2 border border-black text-gray-700 hover:bg-gray-50 transition-colors cursor-pointer"
             >
               Cancelar
             </button>

@@ -13,7 +13,7 @@ const ModalFormCertificate = ({ isOpen, onClose, onSubmit }) => {
       <div
         className="fixed inset-0 flex items-center justify-center z-50 p-4"
       >
-        <div className="bg-white rounded-lg shadow-xl max-w-3xl p-5 w-full overflow-y-auto">
+        <div className="bg-white shadow-xl max-w-3xl p-5 w-full overflow-y-auto">
           <div className="flex items-center justify-between p-5">
             <h2 className="text-3xl font-semibold text-black">
               Nuevo Certificado

@@ -23,7 +23,7 @@ const ModalCertificate = ({ isOpen, onClose, certificate }) => {
         className="fixed inset-0 flex items-center justify-center z-50 p-4"
         onClick={handleOverlayClick}
       >
-        <article className="bg-white rounded-lg shadow-xl max-w-[540px] pb-8 px-8 w-full overflow-y-auto relative">
+        <article className="bg-white shadow-xl max-w-[540px] pb-8 px-8 w-full overflow-y-auto relative">
           <section className="absolute flex items-center justify-end right-10">
             <div className="bg-black pt-16 pb-4 px-4 flex items-end">
               <QRCode

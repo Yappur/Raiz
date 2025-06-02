@@ -44,7 +44,7 @@ const ModalCreatedCertificate = ({ isOpen, onClose, certificate }) => {
         className="fixed inset-0 flex items-center justify-center z-50 p-4"
         onClick={handleOverlayClick}
       >
-        <article className="bg-white rounded-lg shadow-xl max-w-[540px] p-8 w-full overflow-y-auto">
+        <article className="bg-white shadow-xl max-w-[540px] p-8 w-full overflow-y-auto">
           <section className="flex flex-col gap-y-4">
             <h2 className="text-xl flex justify-center items-center font-semibold text-gray-900">
               ¡Certificado emitido correctamente!

@@ -205,7 +205,7 @@ export function ProductListPage() {
           <div className="text-red-500 mb-4">{error}</div>
           <button
             onClick={handleRefreshCertificates}
-            className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+            className="px-4 py-2 bg-blue-500 text-white hover:bg-blue-600"
           >
             Reintentar
           </button>
@@ -233,7 +233,7 @@ export function ProductListPage() {
         {products.map((product) => (
           <div
             key={product.id}
-            className="bg-white border border-gray-200 rounded-lg p-4 shadow-sm hover:shadow-md transition-shadow"
+            className="bg-white border border-gray-200 p-4 shadow-sm hover:shadow-md transition-shadow"
           >
             <div className="flex items-start justify-between mb-3">
               <h3 className="font-medium text-lg text-gray-900">
@@ -263,7 +263,7 @@ export function ProductListPage() {
                 <div className="flex justify-center gap-4">
                   <button
                     onClick={() => handleViewCertificate(product)}
-                    className="flex items-center gap-2 px-3 py-2 text-sm rounded-md transition-colors"
+                    className="flex items-center gap-2 px-3 py-2 text-sm transition-colors"
                     title="Ver certificado"
                   >
                     <img
@@ -275,7 +275,7 @@ export function ProductListPage() {
 
                   <button
                     onClick={() => handleDownloadCertificate(product)}
-                    className="flex items-center gap-2 px-3 py-2 text-sm rounded-md transition-colors"
+                    className="flex items-center gap-2 px-3 py-2 text-sm transition-colors"
                     title="Descargar certificado"
                     disabled={isExporting}
                   >
@@ -288,7 +288,7 @@ export function ProductListPage() {
 
                   <button
                     onClick={() => downloadQRCode(product.id)}
-                    className="flex items-center gap-2 px-3 py-2 text-sm rounded-md transition-colors"
+                    className="flex items-center gap-2 px-3 py-2 text-sm transition-colors"
                     title="Descargar QR"
                     disabled={isExporting}
                   >
@@ -394,7 +394,7 @@ export function ProductListPage() {
           renderMobileCards()
         ) : (
           // Vista desktop - Tabla
-          <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
+          <div className="bg-white shadow-sm border border-gray-200 overflow-hidden">
             {loading ? (
               <div className="flex justify-center items-center py-8">
                 <div className="text-gray-500">Cargando certificados...</div>
@@ -404,7 +404,7 @@ export function ProductListPage() {
                 <div className="text-red-500 mb-4">{error}</div>
                 <button
                   onClick={handleRefreshCertificates}
-                  className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+                  className="px-4 py-2 bg-blue-500 text-white hover:bg-blue-600"
                 >
                   Reintentar
                 </button>
@@ -416,7 +416,7 @@ export function ProductListPage() {
                 </div>
                 <button
                   onClick={() => setIsFormModalOpen(true)}
-                  className="px-4 py-2 bg-black text-white rounded hover:bg-gray-800"
+                  className="px-4 py-2 bg-black text-white hover:bg-gray-800"
                 >
                   Crear tu primer certificado
                 </button>
@@ -468,7 +468,7 @@ export function ProductListPage() {
                           <div className="flex justify-center gap-4">
                             <button
                               onClick={() => handleViewCertificate(product)}
-                              className="p-2 rounded-md"
+                              className="p-2"
                               title="Ver certificado"
                             >
                               <img
@@ -480,7 +480,7 @@ export function ProductListPage() {
 
                             <button
                               onClick={() => handleDownloadCertificate(product)}
-                              className="p-2 rounded-md"
+                              className="p-2"
                               title="Descargar certificado"
                               disabled={isExporting}
                             >
@@ -493,7 +493,7 @@ export function ProductListPage() {
 
                             <button
                               onClick={() => downloadQRCode(product.id)}
-                              className="p-2 rounded-md"
+                              className="p-2"
                               title="Descargar QR"
                               disabled={isExporting}
                             >
@@ -542,7 +542,7 @@ export function ProductListPage() {
 
         {/* Footer de paginación*/}
         {products.length > 0 && (
-          <footer className="flex flex-col sm:flex-row justify-between items-center gap-4 mt-8 bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+          <footer className="flex flex-col sm:flex-row justify-between items-center gap-4 mt-8 bg-white p-4 shadow-sm border border-gray-200">
             <span className="text-sm text-gray-600">Filas por página: 10</span>
 
             <div className="flex gap-2 items-center overflow-x-auto">
