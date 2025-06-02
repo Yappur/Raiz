@@ -166,12 +166,12 @@ Con **Broto**, integrarse a la Web3 es fácil, humano y accesible para todos.
 
 # Mockups 📸 
 
-<img src="./src/assets/images/Group 4832.png" alt="Broto, tu asistente" height="300" style="margin: 15px"/>
-<img src="./src/assets/images/Group 4833.png" alt="Broto, tu asistente" height="300" style="margin: 15px"/>
-<img src="./src/assets/images/Group 4834.png" alt="Broto, tu asistente" height="300" style="margin: 15px"/>
-<img src="./src/assets/images/Group 4835.png" alt="Broto, tu asistente" height="300" style="margin: 15px"/>
-<img src="./src/assets/images/Group 4836.png" alt="Broto, tu asistente" height="400" style="margin: 0 36px"/>
-<img src="./src/assets/images/Group 4831.png" alt="Broto, tu asistente" height="400" style="margin: 0 36px"/>
-<img src="./src/assets/images/Group 4774.png" alt="Broto, tu asistente" height="400" style="margin: 0 36px"/>
+<img src="./public/images/Group 4832.png" alt="Broto, tu asistente" height="300" style="margin: 15px"/>
+<img src="./public/images/Group 4833.png" alt="Broto, tu asistente" height="300" style="margin: 15px"/>
+<img src="./public/images/Group 4834.png" alt="Broto, tu asistente" height="300" style="margin: 15px"/>
+<img src="./public/images/Group 4835.png" alt="Broto, tu asistente" height="300" style="margin: 15px"/>
+<img src="./public/images/Group 4836.png" alt="Broto, tu asistente" height="400" style="margin: 0 36px"/>
+<img src="./public/images/Group 4831.png" alt="Broto, tu asistente" height="400" style="margin: 0 36px"/>
+<img src="./public/images/Group 4774.png" alt="Broto, tu asistente" height="400" style="margin: 0 36px"/>
 
 ---
