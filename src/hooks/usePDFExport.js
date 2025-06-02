@@ -16,7 +16,6 @@ const usePDFExport = () => {
     setIsExporting(true);
 
     try {
-      // Crear una nueva ventana para la impresión
       const printWindow = window.open(
         "",
         "_blank",
@@ -29,7 +28,6 @@ const usePDFExport = () => {
         );
       }
 
-      // Generar el contenido HTML para múltiples certificados
       const generateCertificateHTML = (certificate, index) => `
         <div class="certificate-page" ${
           index > 0 ? 'style="page-break-before: always;"' : ""
@@ -54,13 +52,15 @@ const usePDFExport = () => {
               <p class="description"><span class="label">Descripción: </span>${
                 certificate.description
               }</p>
-              ${certificate.image ? 
-              `<div style="display: flex; justify-content: end; position: absolute; align-items: center; right: 10%; top: -10">
+              ${
+                certificate.image
+                  ? `<div style="display: flex; justify-content: end; position: absolute; align-items: center; right: 10%; top: -10">
                 <div style="background-color: #000000; padding-top: 64px; padding-right: 16px; padding-left: 16px; padding-bottom: 16px; display: flex; align-items: end">
                   <img src="${certificate.image}" alt="QR" style="width: 100px; height: 100px; border: 4px solid white;" />
                 </div>
               </div>`
-              : ""}
+                  : ""
+              }
             </div>
           </div>
         </div>
