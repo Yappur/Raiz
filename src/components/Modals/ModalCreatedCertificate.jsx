@@ -1,15 +1,26 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import usePDFExport from "../../hooks/usePDFExport";
+import QRCode from "react-qr-code";
+import { toPng } from "html-to-image";
 
 const ModalCreatedCertificate = ({ isOpen, onClose, certificate }) => {
   const [copied, setCopied] = useState(false);
   // Los hooks SIEMPRE deben estar al inicio, antes de cualquier early return
   const { exportToPDF, isExporting } = usePDFExport();
 
+  const qrRef = useRef({});
   // Early return DESPUÉS de todos los hooks
   if (!isOpen) return null;
 
   const handleDownloadCertificate = async (product) => {
+    const hiddenQR = document.getElementById(`qr-id-${product.id}`);
+    hiddenQR.style.visibility = "visible";
+    const node = qrRef.current[product.id];
+    if (!node) return;
+    const image = await toPng(node);
+
+    product.image = image;
+
     await exportToPDF([product]);
   };
 
@@ -78,6 +89,35 @@ const ModalCreatedCertificate = ({ isOpen, onClose, certificate }) => {
                 <span>✓</span> URL copiada al portapapeles
               </p>
             )}
+            <div className="flex items-center justify-center py-2">
+              <QRCode value={certificate.link} size={180} />
+            </div>
+            <div
+              id={`qr-id-${certificate.id}`}
+              style={{
+                visibility: "hidden",
+                position: "absolute",
+                bottom: "4000px",
+              }}
+            >
+              <div
+                ref={(el) => (qrRef.current[certificate.id] = el)}
+                style={{
+                  background: "white",
+                  padding: 8, // Más padding ayuda a los lectores
+                  display: "inline-block",
+                  borderRadius: 4,
+                }}
+              >
+                <QRCode
+                  value={certificate.link}
+                  bgColor="#FFFFFF"
+                  fgColor="#000000"
+                  level="Q"
+                  size={256}
+                />
+              </div>
+            </div>
           </section>
           <footer className="flex flex-col gap-y-4 mt-6">
             <button

@@ -29,13 +29,13 @@ export const Sidebar = () => {
       }}
       className="fixed bottom-0 left-0 w-full h-[80px] flex flex-row items-center justify-start px-4 py-2 md:max-w-[100px] md:h-screen md:w-[100px] md:flex-col md:justify-between md:px-8 md:py-8 md:top-0 md:bottom-auto"
     >
-      <NavLink to="/producers/home">
-        <div className="hidden md:block">
-          <RaizFavicon />
-        </div>
-      </NavLink>
-
       <div className="flex flex-row gap-6 md:flex-col md:gap-8">
+        <NavLink to="/producers/home">
+          <div className="hidden md:block mb-10">
+            <RaizFavicon />
+          </div>
+        </NavLink>
+
         <NavLink to="/producers/home">
           {({ isActive }) => (
             <HomeIcon
