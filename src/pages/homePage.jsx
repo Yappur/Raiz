@@ -157,7 +157,7 @@ export default function Home() {
   // Nuevo componente para el BrotoBot personalizado de la landing
   const LandingBrotoBot = () => (
     <motion.div
-      className="fixed bottom-8 left-8 z-20 hidden lg:block"
+      className="fixed bottom-24 right-32 z-20 hidden lg:block"
       initial={{ opacity: 0, scale: 0.8, y: 50 }}
       animate={{ opacity: 1, scale: 1, y: 0 }}
       transition={{ duration: 0.8, delay: 2.5 }}
@@ -166,7 +166,7 @@ export default function Home() {
       <motion.img
         src={corrugatedRightArrow}
         alt="Flecha apuntando al botón"
-        className="absolute -top-8 -right-20 w-16 h-auto transform -rotate-12"
+        className="absolute bottom-6 -right-20 w-32 h-auto transform -rotate-[110dg]"
         initial={{ opacity: 0, x: -20 }}
         animate={{ opacity: 1, x: 0 }}
         transition={{ duration: 0.6, delay: 3 }}
@@ -185,25 +185,15 @@ export default function Home() {
         <img
           src={BotBrotoImg}
           alt="Broto Bot"
-          className="w-20 h-20 object-contain drop-shadow-lg"
+          className="size-48 object-contain drop-shadow-lg"
         />
 
         {/* Efecto de pulso */}
         <motion.div
-          className="absolute inset-0 bg-green-400 rounded-full opacity-20"
+          className="absolute inset-0 rounded-full opacity-20"
           animate={{ scale: [1, 1.2, 1] }}
           transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
         />
-      </motion.div>
-
-      {/* Texto indicativo cerca del bot */}
-      <motion.div
-        className="absolute -top-12 left-1/2 transform -translate-x-1/2 text-black font-medium text-sm whitespace-nowrap"
-        initial={{ opacity: 0, y: 10 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.4, delay: 3.5 }}
-      >
-        ¡Hablemos!
       </motion.div>
     </motion.div>
   );

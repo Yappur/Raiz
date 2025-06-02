@@ -91,7 +91,7 @@ const LandingNavbar = ({ showQRScanner, setShowQRScanner }) => {
           <div className="hidden md:flex items-center gap-7">
             <Button
               onClick={() => setShowQRScanner(true)}
-              className="px-7 py-3 text-base font-medium"
+              className="px-7 py-3 text-base font-medium bg-transparent"
               color="secondary"
             >
               Escanear producto
