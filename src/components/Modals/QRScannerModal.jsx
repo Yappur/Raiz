@@ -11,7 +11,7 @@ const QRScannerModal = ({ isOpen, onClose, onScan }) => {
   const codeReaderRef = useRef(null);
   const streamRef = useRef(null);
 
-  // Detectar si es móvil
+  // Detecta si es móvil
   useEffect(() => {
     const checkMobile = () => {
       const isMobileDevice =
@@ -29,7 +29,6 @@ const QRScannerModal = ({ isOpen, onClose, onScan }) => {
   useEffect(() => {
     if (isOpen) {
       startScanner();
-      // Prevenir scroll en móviles cuando el modal está abierto
       if (isMobile) {
         document.body.style.overflow = "hidden";
       }
@@ -189,7 +188,6 @@ const QRScannerModal = ({ isOpen, onClose, onScan }) => {
   if (isMobile) {
     return (
       <div className="fixed inset-0 z-50 bg-black">
-        {/* Header con botón de cerrar */}
         <div className="absolute top-0 left-0 right-0 z-10 p-4 flex justify-end items-center">
           <button
             onClick={handleClose}
@@ -198,8 +196,6 @@ const QRScannerModal = ({ isOpen, onClose, onScan }) => {
             X
           </button>
         </div>
-
-        {/* Cartel centrado */}
         <div className="absolute top-16 left-0 right-0 z-10 flex justify-center">
           <div className="bg-black/60 text-white px-6 py-3">
             <h1 className="text-lg font-medium text-center">
@@ -208,7 +204,6 @@ const QRScannerModal = ({ isOpen, onClose, onScan }) => {
           </div>
         </div>
 
-        {/* Video container */}
         <div className="relative w-full h-full">
           <video
             ref={videoRef}
@@ -222,7 +217,6 @@ const QRScannerModal = ({ isOpen, onClose, onScan }) => {
             muted
           />
 
-          {/* Overlay con marco de escaneo */}
           {isScanning && !error && (
             <div className="absolute inset-0 flex items-center justify-center">
               <div className="relative">
@@ -262,7 +256,6 @@ const QRScannerModal = ({ isOpen, onClose, onScan }) => {
           )}
         </div>
 
-        {/* Controles inferiores - Flash centrado */}
         {isScanning && !error && flashSupported && (
           <div className="absolute bottom-8 left-0 right-0 flex justify-center">
             <button onClick={toggleFlash}>
@@ -301,7 +294,6 @@ const QRScannerModal = ({ isOpen, onClose, onScan }) => {
     );
   }
 
-  // Renderizado para desktop (modal normal)
   return (
     <>
       <div className="fixed inset-0 z-40 bg-black/50"></div>
@@ -316,7 +308,6 @@ const QRScannerModal = ({ isOpen, onClose, onScan }) => {
             </p>
           </div>
 
-          {/* Contenedor del escáner */}
           <div className="relative bg-gray-100 overflow-hidden mb-4">
             <video
               ref={videoRef}
@@ -369,7 +360,6 @@ const QRScannerModal = ({ isOpen, onClose, onScan }) => {
             )}
           </div>
 
-          {/* Controles */}
           <div className="flex gap-3 justify-center">
             <button
               onClick={toggleScanning}

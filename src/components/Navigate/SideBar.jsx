@@ -27,7 +27,7 @@ export const Sidebar = () => {
         backgroundSize: "cover",
         backgroundPosition: "center",
       }}
-      className="fixed bottom-0 left-0 w-full h-[80px] flex flex-row items-center justify-between px-4 py-2 md:max-w-[100px] md:h-screen md:w-[100px] md:flex-col md:justify-between md:px-8 md:py-8 md:top-0 md:bottom-auto"
+      className="fixed bottom-0 left-0 w-full h-[80px] flex flex-row items-center justify-start px-4 py-2 md:max-w-[100px] md:h-screen md:w-[100px] md:flex-col md:justify-between md:px-8 md:py-8 md:top-0 md:bottom-auto"
     >
       <div className="flex flex-row gap-6 md:flex-col md:gap-8">
         <NavLink to="/producers/home">
@@ -61,9 +61,18 @@ export const Sidebar = () => {
             />
           )}
         </NavLink>
+
+        {/* Logout button visible en móvil, oculto en desktop */}
+        <button onClick={handleLogout} className="md:hidden">
+          <ExitIcon
+            className="hover:stroke-icon-hover transition-colors cursor-pointer w-6 h-6 md:w-auto md:h-auto"
+            stroke="black"
+          />
+        </button>
       </div>
 
-      <button onClick={handleLogout}>
+      {/* Logout button visible en desktop, oculto en móvil */}
+      <button onClick={handleLogout} className="hidden md:block">
         <ExitIcon
           className="hover:stroke-icon-hover transition-colors cursor-pointer w-6 h-6 md:w-auto md:h-auto"
           stroke="black"

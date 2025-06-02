@@ -8,7 +8,6 @@ import success from "../assets/icons/success.svg";
 import arrowLeft from "../assets/icons/arrowLeft.svg";
 import BrotoBot from "../components/BrotoBot.jsx";
 
-// Importaciones específicas para la landing
 import BotBrotoImg from "../assets/background/BotBroto.png";
 import corrugatedRightArrow from "../assets/background/corrugatedRightArrow.svg";
 
@@ -154,7 +153,6 @@ export default function Home() {
     );
   };
 
-  // Nuevo componente para el BrotoBot personalizado de la landing
   const LandingBrotoBot = () => (
     <motion.div
       className="fixed bottom-24 right-32 z-20 hidden lg:block"
@@ -162,7 +160,6 @@ export default function Home() {
       animate={{ opacity: 1, scale: 1, y: 0 }}
       transition={{ duration: 0.8, delay: 2.5 }}
     >
-      {/* Flecha apuntando al botón del BrotoBot original */}
       <motion.img
         src={corrugatedRightArrow}
         alt="Flecha apuntando al botón"
@@ -172,15 +169,10 @@ export default function Home() {
         transition={{ duration: 0.6, delay: 3 }}
       />
 
-      {/* Imagen del bot */}
       <motion.div
         className="relative cursor-pointer"
         whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.95 }}
-        onClick={() => {
-          // Aquí puedes agregar la lógica para abrir el chat
-          console.log("Broto Bot clickeado");
-        }}
       >
         <img
           src={BotBrotoImg}
@@ -188,7 +180,6 @@ export default function Home() {
           className="size-48 object-contain drop-shadow-lg"
         />
 
-        {/* Efecto de pulso */}
         <motion.div
           className="absolute inset-0 rounded-full opacity-20"
           animate={{ scale: [1, 1.2, 1] }}
@@ -224,17 +215,6 @@ export default function Home() {
         >
           Escanea tu producto
         </motion.button>
-
-        <motion.button
-          className="underline text-black py-4 px-8 font-medium text-lg transition-colors duration-300"
-          whileHover={{ scale: 1.02 }}
-          whileTap={{ scale: 0.98 }}
-          onClick={() => {
-            console.log("Segundo botón clickeado");
-          }}
-        >
-          Chatea con Broto
-        </motion.button>
       </motion.div>
     </main>
   );
@@ -269,16 +249,13 @@ export default function Home() {
 
           <InfoCards />
 
-          {/* BrotoBot original para otras funcionalidades */}
           <BrotoBot />
         </main>
 
-        {/* Main de móvil */}
         <div className="block md:hidden">
           <MobileMain />
         </div>
 
-        {/* BrotoBot personalizado solo para la landing */}
         <LandingBrotoBot />
       </motion.div>
     </>
