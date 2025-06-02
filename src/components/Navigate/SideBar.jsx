@@ -27,7 +27,7 @@ export const Sidebar = () => {
         backgroundSize: "cover",
         backgroundPosition: "center",
       }}
-      className="fixed bottom-0 left-0 w-full h-[80px] flex flex-row items-center justify-between px-4 py-2 md:max-w-[100px] md:h-screen md:w-[100px] md:flex-col md:justify-between md:px-8 md:py-8 md:top-0 md:bottom-auto"
+      className="fixed bottom-0 left-0 w-full h-[80px] flex flex-row items-center justify-start px-4 py-2 md:max-w-[100px] md:h-screen md:w-[100px] md:flex-col md:justify-between md:px-8 md:py-8 md:top-0 md:bottom-auto"
     >
       <NavLink to="/producers/home">
         <div className="hidden md:block">
@@ -61,14 +61,14 @@ export const Sidebar = () => {
             />
           )}
         </NavLink>
-      </div>
 
-      <button onClick={handleLogout}>
-        <ExitIcon
-          className="hover:stroke-icon-hover transition-colors cursor-pointer w-6 h-6 md:w-auto md:h-auto"
-          stroke="black"
-        />
-      </button>
+        <button onClick={handleLogout}>
+          <ExitIcon
+            className="hover:stroke-icon-hover transition-colors cursor-pointer w-6 h-6 md:w-auto md:h-auto"
+            stroke="black"
+          />
+        </button>
+      </div>
     </aside>
   );
 };
