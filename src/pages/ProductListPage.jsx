@@ -335,9 +335,6 @@ export function ProductListPage() {
 
   const handleFormModalClose = () => {
     setIsFormModalOpen(false);
-    setTimeout(() => {
-      handleRefreshCertificates();
-    }, 1000);
   };
 
   const qrRefs = useRef({});
@@ -358,7 +355,7 @@ export function ProductListPage() {
   };
 
   return (
-    <main className="min-h-screen bg-gray-50">
+    <main className="min-h-screen bg-white">
       <section className="px-4 sm:px-6 lg:px-8 py-6 w-full max-w-7xl mx-auto">
         {/* Header */}
         <header className="flex flex-col sm:flex-row justify-between items-start sm:items-center py-2 mb-8 sm:mb-20 gap-4">
@@ -394,7 +391,7 @@ export function ProductListPage() {
           renderMobileCards()
         ) : (
           // Vista desktop - Tabla
-          <div className="bg-white shadow-sm border border-gray-200 overflow-hidden">
+          <div className="overflow-hidden">
             {loading ? (
               <div className="flex justify-center items-center py-8">
                 <div className="text-gray-500">Cargando certificados...</div>
@@ -424,7 +421,7 @@ export function ProductListPage() {
             ) : (
               <div className="overflow-x-auto">
                 <table className="w-full min-w-[800px]">
-                  <thead className="bg-gray-50">
+                  <thead>
                     <tr className="border-b border-gray-200">
                       <th className="text-left py-3 px-4 font-medium text-gray-900">
                         Nombre
@@ -542,7 +539,7 @@ export function ProductListPage() {
 
         {/* Footer de paginación*/}
         {products.length > 0 && (
-          <footer className="flex flex-col sm:flex-row justify-between items-center gap-4 mt-8 bg-white p-4 shadow-sm border border-gray-200">
+          <footer className="flex flex-col sm:flex-row justify-between items-center gap-4 mt-8 p-4">
             <span className="text-sm text-gray-600">Filas por página: 10</span>
 
             <div className="flex gap-2 items-center overflow-x-auto">
@@ -559,6 +556,7 @@ export function ProductListPage() {
       <ModalFormCertificate
         isOpen={isFormModalOpen}
         onClose={handleFormModalClose}
+        refreshCertificates={handleRefreshCertificates}
       />
 
       <ModalCertificate

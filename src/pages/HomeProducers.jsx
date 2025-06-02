@@ -77,7 +77,7 @@ export default function HomeProducers() {
             className="w-full sm:w-auto group"
             aria-label="Emitir nuevo certificado"
           >
-            <div className="bg-white border border-black p-6 sm:p-8 lg:p-10 xl:p-12 transform -rotate-1 sm:-rotate-2 lg:-rotate-3 hover:rotate-0 transition-all duration-500 shadow-lg hover:shadow-2xl cursor-pointer group-hover:scale-105">
+            <div className="bg-transparent border border-black p-6 sm:p-8 lg:p-10 xl:p-12 transform -rotate-1 sm:-rotate-2 lg:-rotate-3 hover:rotate-0 transition-all duration-500 shadow-lg hover:shadow-2xl cursor-pointer group-hover:scale-105">
               <div className="flex items-center justify-center sm:justify-start space-x-3 sm:space-x-4">
                 <span className="text-base sm:text-lg lg:text-xl xl:text-2xl font-semibold text-gray-800 text-center sm:text-left">
                   Emití tu certificado
@@ -97,7 +97,7 @@ export default function HomeProducers() {
             className="w-full sm:w-auto group"
             aria-label="Ver mis certificados"
           >
-            <div className="bg-white border border-black p-6 sm:p-8 lg:p-10 xl:p-12 transform rotate-1 sm:rotate-2 lg:rotate-3 hover:rotate-0 transition-all duration-500 shadow-lg hover:shadow-2xl cursor-pointer group-hover:scale-105">
+            <div className="bg-transparent border border-black p-6 sm:p-8 lg:p-10 xl:p-12 transform rotate-1 sm:rotate-2 lg:rotate-3 hover:rotate-0 transition-all duration-500 shadow-lg hover:shadow-2xl cursor-pointer group-hover:scale-105">
               <div className="flex items-center justify-center sm:justify-start space-x-3 sm:space-x-4">
                 <span className="text-base sm:text-lg lg:text-xl xl:text-2xl font-semibold text-gray-800 text-center sm:text-left">
                   Ver tus certificados
