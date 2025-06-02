@@ -62,13 +62,22 @@ export const Sidebar = () => {
           )}
         </NavLink>
 
-        <button onClick={handleLogout}>
+        {/* Logout button visible en móvil, oculto en desktop */}
+        <button onClick={handleLogout} className="md:hidden">
           <ExitIcon
             className="hover:stroke-icon-hover transition-colors cursor-pointer w-6 h-6 md:w-auto md:h-auto"
             stroke="black"
           />
         </button>
       </div>
+
+      {/* Logout button visible en desktop, oculto en móvil */}
+      <button onClick={handleLogout} className="hidden md:block">
+        <ExitIcon
+          className="hover:stroke-icon-hover transition-colors cursor-pointer w-6 h-6 md:w-auto md:h-auto"
+          stroke="black"
+        />
+      </button>
     </aside>
   );
 };
