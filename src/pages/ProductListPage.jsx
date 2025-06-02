@@ -269,7 +269,7 @@ export function ProductListPage() {
                     <img
                       src={eyeIcon}
                       alt="Ver"
-                      className="cursor-pointer transition-transform duration-400 ease-in-out hover:scale-140"
+                      className="cursor-pointer w-[24px] h-[15px] transition-transform duration-400 ease-in-out hover:scale-140"
                     />
                   </button>
 
@@ -282,7 +282,7 @@ export function ProductListPage() {
                     <img
                       src={fileIcon}
                       alt="download File"
-                      className="cursor-pointer transition-transform duration-400 ease-in-out hover:scale-140"
+                      className="cursor-pointer w-[24px] h-[15px] transition-transform duration-400 ease-in-out hover:scale-140"
                     />
                   </button>
 
@@ -295,7 +295,7 @@ export function ProductListPage() {
                     <img
                       src={QRIcon}
                       alt="download QR"
-                      className="cursor-pointer transition-transform duration-400 ease-in-out hover:scale-140"
+                      className="cursor-pointer w-[24px] h-[15px] transition-transform duration-400 ease-in-out hover:scale-140"
                     />
                   </button>
                   <div
@@ -471,7 +471,7 @@ export function ProductListPage() {
                               <img
                                 src={eyeIcon}
                                 alt="Ver"
-                                className="cursor-pointer transition-transform duration-400 ease-in-out hover:scale-140"
+                                className="cursor-pointer w-[24px] h-[15px] transition-transform duration-400 ease-in-out hover:scale-140"
                               />
                             </button>
 
@@ -484,7 +484,7 @@ export function ProductListPage() {
                               <img
                                 src={fileIcon}
                                 alt="Descargar Certificate"
-                                className="cursor-pointer transition-transform duration-400 ease-in-out hover:scale-140"
+                                className="cursor-pointer w-[24px] h-[15px] transition-transform duration-400 ease-in-out hover:scale-140"
                               />
                             </button>
 
@@ -497,7 +497,7 @@ export function ProductListPage() {
                               <img
                                 src={QRIcon}
                                 alt="Descargar QR"
-                                className="cursor-pointer transition-transform duration-400 ease-in-out hover:scale-140"
+                                className="cursor-pointer w-[24px] h-[15px] transition-transform duration-400 ease-in-out hover:scale-140"
                               />
                             </button>
                           </div>
